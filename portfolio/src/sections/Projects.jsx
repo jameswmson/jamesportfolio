@@ -17,13 +17,6 @@ export default function Projects() {
         <h2 className="text-5xl font-serif font-bold tracking-normal text-black md:text-6xl text-center">
           Projects
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-neutral-600 text-center">
-          Selected work — swap in your real URLs and copy in{' '}
-          <code className="inline-block rounded bg-neutral-100 px-1.5 py-0.5 text-sm ring-1 ring-neutral-200">
-            src/data/projects.js
-          </code>
-          .
-        </p>
         <div className="mx-auto mt-10 grid w-full max-w-6xl justify-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
             <motion.article

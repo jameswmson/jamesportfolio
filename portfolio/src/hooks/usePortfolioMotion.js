@@ -19,8 +19,11 @@ export function usePortfolioMotion() {
           initial: { opacity: 0, y: 24 },
           whileInView: { opacity: 1, y: 0 },
           viewport: { once: true },
-          transition: { duration: 0.4, delay: index * 0.08 },
-          whileHover: { y: -4 },
+          transition: {
+            default: { duration: 0.4, delay: index * 0.08 },
+            scale: { duration: 0 },
+          },
+          whileHover: { scale: 1.02, transition: { duration: 0.15 } },
           whileTap: { scale: 0.97 },
         }
 
@@ -28,10 +31,15 @@ export function usePortfolioMotion() {
     shouldReduceMotion
       ? { viewport: { once: true } }
       : {
-          initial: { opacity: 0, scale: 0.8 },
-          whileInView: { opacity: 1, scale: 1 },
+          initial: { opacity: 0, y: 12 },
+          whileInView: { opacity: 1, y: 0 },
           viewport: { once: true },
-          transition: { duration: 0.35, delay: index * 0.05 },
+          transition: {
+            default: { duration: 0.3, delay: 0.04 * index },
+            scale: { duration: 0 },
+          },
+          whileHover: { scale: 1.05, transition: { duration: 0.15 } },
+          whileTap: { scale: 0.95 },
         }
 
   const buttonMotion = shouldReduceMotion

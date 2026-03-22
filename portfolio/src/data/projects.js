@@ -8,7 +8,7 @@ export const projects = [
     ],
     tags: ['JavaScript', 'TypeScript', 'React', 'Git'],
     liveUrl: '#',
-    repoUrl: '#',
+    repoUrl: 'https://github.com/JamesWiiiiamson/StreetSmart',
   },
   {
     title: 'Vertical Tabs Manager',
@@ -19,7 +19,7 @@ export const projects = [
     ],
     tags: ['React', 'TypeScript', 'Vite'],
     liveUrl: '#',
-    repoUrl: '#',
+    repoUrl: 'https://github.com/prannyv/wfnbrowser',
   },
   {
     title: 'Swolemate',

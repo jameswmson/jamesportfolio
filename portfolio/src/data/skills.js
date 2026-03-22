@@ -3,5 +3,5 @@ export const skills = [
   'HTML', 'CSS', 'React', 'Node.js',
   'pandas', 'NumPy', 'Matplotlib', 'Power BI', 'SQL',
   'Git', 'GitHub', 'VS Code', 'Linux',
-  'Excel', 'PowerPoint', 'Word', 'Outlook', 'Slack'
+  'Excel', 'PowerPoint', 'Word'
 ];
