@@ -1,32 +1,43 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import ScrollContainer from './components/ScrollContainer.jsx'
-import NavDots from './components/NavDots.jsx'
-
-const PANEL_CLASSES = [
-  'bg-rose-600',
-  'bg-amber-500',
-  'bg-emerald-600',
-  'bg-sky-600',
-  'bg-violet-700',
-]
+import Timeline from './components/Timeline.jsx'
+import Hero from './sections/Hero.jsx'
+import About from './sections/About.jsx'
+import Projects from './sections/Projects.jsx'
+import Skills from './sections/Skills.jsx'
+import Contact from './sections/Contact.jsx'
 
 export default function App() {
+  const scrollRef = useRef(null)
   const [active, setActive] = useState(0)
+  const [progress, setProgress] = useState(0)
+
   const onActiveChange = useCallback((index) => {
     setActive(index)
   }, [])
 
+  const onScrollProgress = useCallback((p) => {
+    setProgress(p)
+  }, [])
+
+  const handleSeek = useCallback((index) => {
+    scrollRef.current?.seekToIndex(index)
+  }, [])
+
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
-      <ScrollContainer onActiveChange={onActiveChange}>
-        {PANEL_CLASSES.map((bg, i) => (
-          <div
-            key={i}
-            className={`min-w-full h-screen w-screen flex-shrink-0 snap-start ${bg}`}
-          />
-        ))}
+    <div className="relative min-h-screen w-full overflow-hidden bg-white">
+      <ScrollContainer
+        ref={scrollRef}
+        onActiveChange={onActiveChange}
+        onScrollProgress={onScrollProgress}
+      >
+        <Hero />
+        <About />
+        <Projects />
+        <Skills />
+        <Contact />
       </ScrollContainer>
-      <NavDots total={PANEL_CLASSES.length} active={active} />
+      <Timeline total={5} active={active} progress={progress} onSeek={handleSeek} />
     </div>
   )
 }
