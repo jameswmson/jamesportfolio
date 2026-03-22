@@ -1,12 +1,7 @@
 export const skills = [
-  'React',
-  'JavaScript',
-  'TypeScript',
-  'HTML & CSS',
-  'Tailwind CSS',
-  'Vite',
-  'Git',
-  'Accessibility',
-  'REST APIs',
-  'Framer Motion',
-]
+  'Java', 'Python', 'JavaScript', 'TypeScript',
+  'HTML', 'CSS', 'React', 'Node.js',
+  'pandas', 'NumPy', 'Matplotlib', 'Power BI', 'SQL',
+  'Git', 'GitHub', 'VS Code', 'Linux',
+  'Excel', 'PowerPoint', 'Word', 'Outlook', 'Slack'
+];

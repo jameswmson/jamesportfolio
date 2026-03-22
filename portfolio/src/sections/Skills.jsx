@@ -3,29 +3,29 @@ import { skills } from '../data/skills.js'
 import { usePortfolioMotion } from '../hooks/usePortfolioMotion.js'
 
 const panelClass =
-  'min-w-full h-screen w-screen shrink-0 overflow-y-auto bg-white text-neutral-900'
+  'min-w-full h-screen w-full shrink-0 overflow-y-auto text-neutral-900'
 
 export default function Skills() {
   const { sectionFade, skillBadge } = usePortfolioMotion()
 
   return (
-    <section className={panelClass}>
+    <section className={`${panelClass} flex flex-col items-center justify-center`}>
       <motion.div
-        className="mx-auto max-w-4xl px-6 py-14 pb-28 md:py-16"
+        className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center px-6 pb-24 text-center"
         {...sectionFade}
       >
-        <h2 className="text-3xl font-semibold tracking-tight text-black md:text-4xl">
+        <h2 className="text-5xl font-serif font-bold tracking-normal text-black md:text-6xl text-center">
           Skills
         </h2>
-        <p className="mt-2 text-neutral-600">
+        <p className="mx-auto mt-4 text-neutral-600 text-center">
           Tools and technologies I reach for most often.
         </p>
-        <div className="mt-10 flex flex-wrap justify-center gap-3 md:justify-start">
+        <div className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-3">
           {skills.map((skill, index) => (
             <motion.span
               key={skill}
               {...skillBadge(index)}
-              className="rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm"
+              className="rounded-2xl border-2 border-neutral-200 bg-white px-5 py-2.5 text-sm font-bold text-black shadow-sm text-center"
             >
               {skill}
             </motion.span>

@@ -3,7 +3,7 @@ import { useHorizontalScroll } from '../context/HorizontalScrollContext.jsx'
 import { usePortfolioMotion } from '../hooks/usePortfolioMotion.js'
 
 const panelClass =
-  'min-w-full h-screen w-screen shrink-0 overflow-y-auto bg-white text-neutral-900'
+  'min-w-full h-screen w-full shrink-0 overflow-y-auto text-neutral-900'
 
 export default function Hero() {
   const reduced = useReducedMotion()
@@ -20,33 +20,23 @@ export default function Hero() {
         }
 
   return (
-    <section className={`${panelClass} flex flex-col justify-center`}>
+    <section className={`${panelClass} flex flex-col items-center justify-center overflow-hidden`}>
       <motion.div
-        className="mx-auto max-w-3xl px-6 pb-24 text-center"
+        className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center px-6 pb-24 text-center"
         {...sectionFade}
       >
         <motion.h1
-          className="text-4xl font-semibold tracking-tight text-black sm:text-6xl"
+          className="mb-2 text-5xl sm:text-6xl md:text-8xl lg:text-[9rem] font-serif font-bold tracking-normal text-black text-center whitespace-nowrap"
           {...item(0)}
         >
-          James
+          James Williamson
         </motion.h1>
         <motion.h2
-          className="mt-4 text-lg text-neutral-600 sm:text-xl"
+          className="mt-6 text-2xl text-neutral-600 sm:text-3xl lg:text-4xl text-center"
           {...item(0.15)}
         >
-          Frontend developer crafting fast, accessible interfaces.
+          First Year Computer Science Student @ Western University
         </motion.h2>
-        <motion.div className="mt-10 flex justify-center" {...item(0.3)}>
-          <motion.button
-            type="button"
-            className="inline-flex cursor-pointer rounded-full border-2 border-black bg-black px-8 py-3 text-sm font-medium text-white"
-            {...buttonMotion}
-            onClick={() => scrollRef?.current?.seekToIndex(1)}
-          >
-            View my work
-          </motion.button>
-        </motion.div>
       </motion.div>
     </section>
   )

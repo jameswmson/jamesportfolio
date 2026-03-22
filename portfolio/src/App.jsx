@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import ScrollContainer from './components/ScrollContainer.jsx'
 import Timeline from './components/Timeline.jsx'
+import CornerDoodles from './components/CornerDoodles.jsx'
 import Hero from './sections/Hero.jsx'
 import About from './sections/About.jsx'
 import Projects from './sections/Projects.jsx'
@@ -25,7 +26,8 @@ export default function App() {
   }, [])
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-white">
+    <div className="relative min-h-screen w-full bg-paper font-sans text-neutral-900 selection:bg-neutral-900 selection:text-white">
+      <CornerDoodles />
       <ScrollContainer
         ref={scrollRef}
         onActiveChange={onActiveChange}
