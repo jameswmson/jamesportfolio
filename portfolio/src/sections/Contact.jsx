@@ -10,7 +10,7 @@ const githubUrl =
 const linkedinUrl =
   import.meta.env.VITE_LINKEDIN_URL ?? 'https://www.linkedin.com/in/james-williamson9573/'
 const mailto =
-  import.meta.env.VITE_CONTACT_EMAIL ?? 'mailto:hello@example.com'
+  import.meta.env.VITE_CONTACT_EMAIL ?? 'mailto:Jaswmson@gmail.com'
 
 const socialLinkClass =
   'flex items-center gap-3 rounded-2xl border-2 border-neutral-200 bg-neutral-50 px-8 py-4 text-lg font-bold text-neutral-900 transition hover:border-black hover:shadow-md'
@@ -29,7 +29,7 @@ export default function Contact() {
             Contact
           </h2>
           <p className="mx-auto mt-6 max-w-lg text-neutral-600 text-center text-lg md:text-xl">
-            Check out my links below or download my resume!
+            Check out my links or my resume!
           </p>
         </div>
 

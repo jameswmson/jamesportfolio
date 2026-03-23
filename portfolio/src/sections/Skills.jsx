@@ -17,8 +17,8 @@ export default function Skills() {
         <h2 className="text-5xl font-serif font-bold tracking-normal text-black md:text-6xl text-center">
           Skills
         </h2>
-        <p className="mx-auto mt-4 text-neutral-600 text-center">
-          Tools and technologies I reach for most often.
+        <p className="mx-auto mt-4 max-w-lg text-neutral-600">
+          Languages and Tools I use most often.
         </p>
         <div className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-3">
           {skills.map((skill, index) => (

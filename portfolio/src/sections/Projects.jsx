@@ -17,6 +17,9 @@ export default function Projects() {
         <h2 className="text-5xl font-serif font-bold tracking-normal text-black md:text-6xl text-center">
           Projects
         </h2>
+        <p className="mx-auto mt-4 max-w-lg text-neutral-600">
+          Some of my favorite projects!
+        </p>
         <div className="mx-auto mt-10 grid w-full max-w-6xl justify-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
             <motion.article
@@ -24,7 +27,7 @@ export default function Projects() {
               {...projectCard(index)}
               className="flex w-full flex-col items-center rounded-2xl border border-neutral-200 bg-neutral-50 p-4 md:p-5 text-center shadow-sm"
             >
-              <h3 className="text-2xl font-semibold text-black text-center">
+              <h3 className="text-3xl font-patrick font-bold tracking-wider text-black text-center">
                 {project.title}
               </h3>
               {project.date && (

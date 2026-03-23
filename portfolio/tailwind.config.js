@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         sans: ['Quicksand', 'sans-serif'],
         serif: ['Caveat', 'cursive'],
+        patrick: ['"Patrick Hand"', 'cursive'],
       },
     },
   },
