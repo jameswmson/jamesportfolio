@@ -25,10 +25,10 @@ export const projects = [
     title: 'Free Agency Steals',
     date: 'March 2026 - Present',
     description: [
-      'Built a Python-based pipeline to identify the best NFL free-agent value signings, combining contract data via the Sportradar API with performance stats from nfl_data_py.',
-      'Implemented fuzzy name matching to join 1,500+ player name formats across data sources using a custom-tuned 85% similarity threshold.',
+      'Built a Python pipeline to identify NFL free-agent value signings using Sportradar API and nfl_data_py.',
+      'Implemented fuzzy name matching to join 1,500+ records across sources at an 85% similarity threshold.',
     ],
-    tags: ['Python', 'SQL', 'Power BI', 'Sportradar API'],
+    tags: ['Python', 'SQL', 'Power BI'],
     liveUrl: '#',
     repoUrl: 'https://github.com/JamesWiiiiamson/freeagencytracker',
   },
