@@ -22,14 +22,14 @@ export const projects = [
     repoUrl: 'https://github.com/prannyv/wfnbrowser',
   },
   {
-    title: 'Swolemate',
-    date: 'Mar 2025 - Apr 2025',
+    title: 'Free Agency Steals',
+    date: 'March 2026 - Present',
     description: [
-      'Developed a Java desktop application allowing users to create, manage, and customize workout plans.',
-      'Implemented full CRUD functionality for modifying workout entries natively.',
+      'Built a Python-based pipeline to identify the best NFL free-agent value signings, combining contract data via the Sportradar API with performance stats from nfl_data_py.',
+      'Implemented fuzzy name matching to join 1,500+ player name formats across data sources using a custom-tuned 85% similarity threshold.',
     ],
-    tags: ['Java', 'Swing', 'Canva'],
+    tags: ['Python', 'SQL', 'Power BI', 'Sportradar API'],
     liveUrl: '#',
-    repoUrl: '#',
+    repoUrl: 'https://github.com/JamesWiiiiamson/freeagencytracker',
   },
 ]
