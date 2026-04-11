@@ -12,7 +12,7 @@ export const projects = [
   },
   {
     title: 'Vertical Tabs Manager',
-    date: 'Jan 2026 - Present',
+    date: 'Jan 2026 - March 2026',
     description: [
       'Developed a tab management Chrome Extension providing an Arc/Zen inspired user environment.',
       'Built a Tab Analyzer that extracts features from URL metadata for automated organization.',
@@ -23,7 +23,7 @@ export const projects = [
   },
   {
     title: 'Free Agency Steals',
-    date: 'March 2026 - Present',
+    date: 'March 2026 - April 2026',
     description: [
       'Built a Python pipeline to identify NFL free-agent value signings using Sportradar API and nfl_data_py.',
       'Implemented fuzzy name matching to join 1,500+ records across sources at an 85% similarity threshold.',
