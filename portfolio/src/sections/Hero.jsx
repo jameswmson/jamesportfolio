@@ -35,7 +35,7 @@ export default function Hero() {
           className="mt-6 text-2xl text-neutral-600 sm:text-3xl lg:text-4xl text-center"
           {...item(0.15)}
         >
-          First Year Computer Science Student @ Western University
+          Computer Science Student @ Western University
         </motion.h2>
       </motion.div>
     </section>
