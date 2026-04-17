@@ -1,35 +1,36 @@
 export const projects = [
   {
-    title: 'StreetSmart',
-    date: 'November 2025 - January 2026',
+    title: 'Free Agency Steals',
+    date: 'March 2026 - April 2026',
     description: [
-      'Led development of a web application helping users identify safer walking routes using lighting and crime data.',
-      'Integrated Google Maps APIs, resolving data handling issues to ensure reliable route processing.',
+      'Built an automated ETL pipeline processing 612 NFL player records daily across 3 PostgreSQL tables.',
+      'Built a Power BI dashboard grading 266 players into an A+ to F tier system using a composite EPA index.',
     ],
-    tags: ['JavaScript', 'TypeScript', 'React', 'Git'],
+    tags: ['Python', 'SQL', 'PostgreSQL', 'Power BI'],
     liveUrl: '#',
-    repoUrl: 'https://github.com/JamesWiiiiamson/StreetSmart',
+    repoUrl: 'https://github.com/JamesWiiiiamson/freeagencytracker',
   },
   {
     title: 'Vertical Tabs Manager',
-    date: 'Jan 2026 - March 2026',
+    date: 'January 2026 - March 2026',
     description: [
-      'Developed a tab management Chrome Extension providing an Arc/Zen inspired user environment.',
-      'Built a Tab Analyzer that extracts features from URL metadata for automated organization.',
+      'Built a TF-IDF NLP pipeline that auto-categorizes tabs using a composite similarity score (60% keyword TF-IDF, 40% domain overlap).',
+      'Implemented 60fps drag-and-drop with real-time edge scrolling using native DragEvents, removing any third-party dependency.',
     ],
     tags: ['React', 'TypeScript', 'Vite'],
     liveUrl: '#',
     repoUrl: 'https://github.com/prannyv/wfnbrowser',
   },
   {
-    title: 'Free Agency Steals',
-    date: 'March 2026 - April 2026',
+    title: 'StreetSmart',
+    date: 'November 2025 - January 2026',
     description: [
-      'Built a Python pipeline to identify NFL free-agent value signings using Sportradar API and nfl_data_py.',
-      'Implemented fuzzy name matching to join 1,500+ records across sources at an 85% similarity threshold.',
+      'Led development on a team of 4, owning the crime heatmap, lighting heatmap, incident reporting, and multi-route comparison features.',
+      'Cut pedestrian exposure to high-crime areas by ~30% per route by processing 1,300+ city blocks of crime data from 365+ days of Toronto Police records.',
     ],
-    tags: ['Python', 'SQL', 'Power BI'],
+    tags: ['JavaScript', 'TypeScript', 'React', 'Git'],
     liveUrl: '#',
-    repoUrl: 'https://github.com/JamesWiiiiamson/freeagencytracker',
+    repoUrl: 'https://github.com/JamesWiiiiamson/StreetSmart',
   },
 ]
+
