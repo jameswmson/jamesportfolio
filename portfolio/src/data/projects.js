@@ -1,6 +1,7 @@
 export const projects = [
   {
     title: 'Free Agency Steals',
+    slug: 'free-agency-steals',
     date: 'March 2026 - April 2026',
     description: [
       'Built an automated ETL pipeline processing 612 NFL player records daily across 3 PostgreSQL tables.',
@@ -12,6 +13,7 @@ export const projects = [
   },
   {
     title: 'Vertical Tabs Manager',
+    slug: 'vertical-tabs-manager',
     date: 'January 2026 - March 2026',
     description: [
       'Built a TF-IDF NLP pipeline that auto-categorizes tabs using a composite similarity score (60% keyword TF-IDF, 40% domain overlap).',
@@ -23,6 +25,7 @@ export const projects = [
   },
   {
     title: 'StreetSmart',
+    slug: 'streetsmart',
     date: 'November 2025 - January 2026',
     description: [
       'Led development on a team of 4, owning the crime heatmap, lighting heatmap, incident reporting, and multi-route comparison features.',
@@ -33,4 +36,3 @@ export const projects = [
     repoUrl: 'https://github.com/JamesWiiiiamson/StreetSmart',
   },
 ]
-

@@ -4,9 +4,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Quicksand', 'sans-serif'],
-        serif: ['Caveat', 'cursive'],
-        patrick: ['"Patrick Hand"', 'cursive'],
+        sans: ['Public Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['Libre Bodoni', 'Libre Bodoni Fallback', 'Georgia', 'serif'],
+      },
+      colors: {
+        paper: '#F7F4EF',
+        ink: '#1C1917',
+        muted: '#57534E',
+        folio: '#78716C',
+        rule: '#D6D3D1',
       },
     },
   },
