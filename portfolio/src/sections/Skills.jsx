@@ -1,34 +1,64 @@
 import { motion } from 'framer-motion'
-import { skills } from '../data/skills.js'
-import { usePortfolioMotion } from '../hooks/usePortfolioMotion.js'
-
-const panelClass =
-  'min-w-full h-screen w-full shrink-0 overflow-y-auto text-neutral-900'
+import Hairline from '../components/Hairline.jsx'
+import MaskHeadline from '../components/MaskHeadline.jsx'
+import { skillGroups } from '../data/skills.js'
+import { useStage } from '../context/StageContext.jsx'
+import { typeEase } from '../motion/easing.js'
 
 export default function Skills() {
-  const { sectionFade, skillBadge } = usePortfolioMotion()
+  const { reducedMotion, isDesktop, section, sectionDir, lastTravel } = useStage()
+  const active = !isDesktop || section.id === 'skills'
+  const offsetY = lastTravel === 'section' && isDesktop ? sectionDir * 24 : 0
 
   return (
-    <section className={`${panelClass} flex flex-col items-center justify-center`}>
+    <section
+      id="skills"
+      className={`flex min-h-full flex-col justify-center px-[clamp(1.5rem,6vw,5rem)] py-20 ${
+        isDesktop ? 'h-full overflow-y-auto' : 'min-h-dvh'
+      }`}
+    >
       <motion.div
-        className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center px-6 pb-24 text-center"
-        {...sectionFade}
+        className="mx-auto w-full max-w-6xl"
+        initial={reducedMotion ? false : { y: offsetY }}
+        animate={{ y: 0 }}
+        transition={{ duration: reducedMotion ? 0 : 0.45, ease: typeEase }}
       >
-        <h2 className="text-5xl font-serif font-bold tracking-normal text-black md:text-6xl text-center">
+        <p className="mb-6 font-sans text-[11px] font-medium tracking-[0.22em] text-folio uppercase">
           Skills
-        </h2>
-        <p className="mx-auto mt-4 max-w-lg text-neutral-600">
-          Languages and Tools I use most often.
         </p>
-        <div className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-3">
-          {skills.map((skill, index) => (
-            <motion.span
-              key={skill}
-              {...skillBadge(index)}
-              className="rounded-2xl border-2 border-neutral-200 bg-white px-5 py-2.5 text-sm font-bold text-black shadow-sm text-center"
+        <MaskHeadline
+          id="heading-skills"
+          active={active}
+          reducedMotion={reducedMotion}
+          className="font-serif text-5xl leading-[1.05] font-bold tracking-tight text-ink md:text-6xl lg:text-7xl"
+        >
+          Skills
+        </MaskHeadline>
+        <Hairline active={active} reducedMotion={reducedMotion} className="mt-8 max-w-xs" />
+        <p className="mt-6 max-w-lg text-muted">Languages and tools I use most often.</p>
+        <div className="mt-12 grid gap-10 sm:grid-cols-3">
+          {skillGroups.map((group, gi) => (
+            <motion.div
+              key={group.title}
+              initial={reducedMotion ? false : { y: 16, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.45,
+                delay: reducedMotion || !active ? 0 : 0.08 * gi,
+                ease: typeEase,
+              }}
             >
-              {skill}
-            </motion.span>
+              <h3 className="font-sans text-[11px] font-medium tracking-[0.2em] text-folio uppercase">
+                {group.title}
+              </h3>
+              <ul className="mt-4 space-y-2">
+                {group.items.map((skill) => (
+                  <li key={skill} className="text-base text-ink md:text-lg">
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           ))}
         </div>
       </motion.div>

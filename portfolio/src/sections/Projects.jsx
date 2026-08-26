@@ -1,74 +1,56 @@
-import { motion } from 'framer-motion'
+import PanelTrack from '../components/PanelTrack.jsx'
+import SpreadArticle from '../components/SpreadArticle.jsx'
 import { projects } from '../data/projects.js'
-import { usePortfolioMotion } from '../hooks/usePortfolioMotion.js'
+import { headingIdFor } from '../data/sections.js'
+import { useStage } from '../context/StageContext.jsx'
 
-const panelClass =
-  'min-w-full h-screen w-full shrink-0 overflow-y-auto text-neutral-900'
-
-export default function Projects() {
-  const { sectionFade, projectCard } = usePortfolioMotion()
+function ProjectSpread({ project, index, count }) {
+  const { isDesktop, section, panelIndex, reducedMotion, panelDir, sectionDir, lastTravel } =
+    useStage()
+  const active = !isDesktop || (section.id === 'projects' && panelIndex === index)
+  const offsetX = isDesktop && lastTravel === 'panel' ? panelDir * 24 : 0
+  const offsetY = isDesktop && lastTravel === 'section' ? sectionDir * 24 : 0
 
   return (
-    <section className={`${panelClass} flex flex-col items-center justify-center`}>
-      <motion.div
-        className="mx-auto flex w-full max-w-6xl flex-col items-center justify-center px-6 pb-24 text-center"
-        {...sectionFade}
-      >
-        <h2 className="text-5xl font-serif font-bold tracking-normal text-black md:text-6xl text-center">
-          Projects
-        </h2>
-        <p className="mx-auto mt-4 max-w-lg text-neutral-600">
-          Some of my favorite projects!
-        </p>
-        <div className="mx-auto mt-10 grid w-full max-w-6xl justify-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <motion.article
-              key={project.title}
-              {...projectCard(index)}
-              className="flex w-full flex-col items-center rounded-2xl border border-neutral-200 bg-neutral-50 p-4 md:p-5 text-center shadow-sm"
-            >
-              <h3 className="text-3xl font-patrick font-bold tracking-wider text-black text-center">
-                {project.title}
-              </h3>
-              {project.date && (
-                <p className="mt-1 text-xs font-bold text-neutral-400 text-center">
-                  {project.date}
-                </p>
-              )}
-              <div className="mt-4 flex-1 text-sm leading-relaxed text-neutral-600 text-left w-full">
-                {Array.isArray(project.description) ? (
-                  <ul className="list-disc pl-5 space-y-1">
-                    {project.description.map((desc, i) => (
-                      <li key={i}>{desc}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>{project.description}</p>
-                )}
-              </div>
-              <ul className="mt-4 flex flex-wrap justify-center gap-2">
-                {project.tags.map((tag) => (
-                  <li key={tag}>
-                    <span className="inline-block rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-800">
-                      {tag}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-5 flex flex-wrap justify-center gap-3 text-sm font-medium">
-                <a
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg border-2 border-neutral-900 bg-white px-5 py-2 text-neutral-900 transition hover:bg-neutral-100 hover:shadow-sm"
-                >
-                  Repository
-                </a>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </motion.div>
+    <SpreadArticle
+      kicker={`Project ${String(index + 1).padStart(2, '0')} / ${String(count).padStart(2, '0')}`}
+      title={project.title}
+      headingId={headingIdFor({ id: 'projects', items: projects }, index)}
+      meta={project.date}
+      description={project.description}
+      tags={project.tags}
+      href={project.repoUrl}
+      hrefLabel="Repository"
+      active={active}
+      reducedMotion={reducedMotion}
+      offsetX={offsetX}
+      offsetY={offsetY}
+    />
+  )
+}
+
+export default function Projects() {
+  const { isDesktop } = useStage()
+
+  if (!isDesktop) {
+    return (
+      <section id="projects" className="min-h-dvh">
+        {projects.map((project, index) => (
+          <div key={project.slug} className="min-h-dvh border-t border-rule first:border-t-0">
+            <ProjectSpread project={project} index={index} count={projects.length} />
+          </div>
+        ))}
+      </section>
+    )
+  }
+
+  return (
+    <section id="projects" className="h-full min-h-0">
+      <PanelTrack sectionId="projects">
+        {projects.map((project, index) => (
+          <ProjectSpread key={project.slug} project={project} index={index} count={projects.length} />
+        ))}
+      </PanelTrack>
     </section>
   )
 }
