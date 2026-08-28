@@ -1,6 +1,20 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { MOBILE_MAX } from '../lib/deck.js'
 
 const DitheredHead = lazy(() => import('../components/DitheredHead.jsx'))
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= MOBILE_MAX
+  )
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_MAX}px)`)
+    const onChange = (e) => setIsMobile(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return isMobile
+}
 
 function hasWebGL() {
   try {
@@ -23,6 +37,7 @@ function PortraitFallback() {
 
 export default function About() {
   const [webglOk] = useState(hasWebGL)
+  const isMobile = useIsMobile()
 
   return (
     <section
@@ -39,7 +54,7 @@ export default function About() {
         style={{ gridTemplateColumns: 'var(--about-cols)', gap: 'var(--about-gap)' }}
       >
         <div
-          className="block overflow-hidden"
+          className="mx-auto block overflow-hidden"
           style={{ width: 'var(--about-img-w)', aspectRatio: '1 / 1' }}
         >
           {webglOk ? (
@@ -49,6 +64,7 @@ export default function About() {
                 padding={1.06}
                 yOffset={0.1}
                 speed={0.25}
+                dotSize={isMobile ? 5 : 3}
                 transparent
                 className="h-full w-full"
               />
