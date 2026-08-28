@@ -1,6 +1,30 @@
+import { lazy, Suspense, useState } from 'react'
 import CenterSlab from '../components/CenterSlab.jsx'
 
+const DitheredHead = lazy(() => import('../components/DitheredHead.jsx'))
+
+function hasWebGL() {
+  try {
+    const canvas = document.createElement('canvas')
+    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
+
+function PortraitFallback() {
+  return (
+    <img
+      src="/avatar.jpg"
+      alt="Portrait of James Williamson"
+      className="block h-full w-full object-cover"
+    />
+  )
+}
+
 export default function About({ viewport }) {
+  const [webglOk] = useState(hasWebGL)
+
   return (
     <section
       id="about"
@@ -16,16 +40,22 @@ export default function About({ viewport }) {
           className="grid items-center"
           style={{ gridTemplateColumns: 'var(--about-cols)', gap: 'var(--about-gap)' }}
         >
-          <img
-            src="/avatar.jpg"
-            alt="Portrait of James Williamson"
-            className="block object-cover shadow-[8px_8px_0_#D6D3D1]"
+          <div
+            className="block overflow-hidden bg-ink shadow-[8px_8px_0_#D6D3D1]"
             style={{
               width: 'var(--about-img-w)',
               height: 'var(--about-img-h)',
               transform: 'translateZ(40px)',
             }}
-          />
+          >
+            {webglOk ? (
+              <Suspense fallback={<PortraitFallback />}>
+                <DitheredHead src="/head.glb" className="h-full w-full" />
+              </Suspense>
+            ) : (
+              <PortraitFallback />
+            )}
+          </div>
           <div>
             <p className="eyebrow m-0 mb-3.5 text-folio">About</p>
             <h2 className="card-title m-0">About</h2>
