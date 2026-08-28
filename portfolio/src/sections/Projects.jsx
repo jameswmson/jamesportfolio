@@ -1,56 +1,48 @@
-import PanelTrack from '../components/PanelTrack.jsx'
-import SpreadArticle from '../components/SpreadArticle.jsx'
+import BulletList from '../components/BulletList.jsx'
+import CardHeader from '../components/CardHeader.jsx'
+import DeckSlab from '../components/DeckSlab.jsx'
+import ShotTile from '../components/ShotTile.jsx'
+import TagRow from '../components/TagRow.jsx'
+import { pad } from '../lib/deck.js'
 import { projects } from '../data/projects.js'
-import { headingIdFor } from '../data/sections.js'
-import { useStage } from '../context/StageContext.jsx'
 
-function ProjectSpread({ project, index, count }) {
-  const { isDesktop, section, panelIndex, reducedMotion, panelDir, sectionDir, lastTravel } =
-    useStage()
-  const active = !isDesktop || (section.id === 'projects' && panelIndex === index)
-  const offsetX = isDesktop && lastTravel === 'panel' ? panelDir * 24 : 0
-  const offsetY = isDesktop && lastTravel === 'section' ? sectionDir * 24 : 0
-
+export default function Projects({ panel, viewport }) {
   return (
-    <SpreadArticle
-      kicker={`Project ${String(index + 1).padStart(2, '0')} / ${String(count).padStart(2, '0')}`}
-      title={project.title}
-      headingId={headingIdFor({ id: 'projects', items: projects }, index)}
-      meta={project.date}
-      description={project.description}
-      tags={project.tags}
-      href={project.repoUrl}
-      hrefLabel="Repository"
-      active={active}
-      reducedMotion={reducedMotion}
-      offsetX={offsetX}
-      offsetY={offsetY}
-    />
-  )
-}
-
-export default function Projects() {
-  const { isDesktop } = useStage()
-
-  if (!isDesktop) {
-    return (
-      <section id="projects" className="min-h-dvh">
-        {projects.map((project, index) => (
-          <div key={project.slug} className="min-h-dvh border-t border-rule first:border-t-0">
-            <ProjectSpread project={project} index={index} count={projects.length} />
-          </div>
+    <section
+      id="projects"
+      data-screen-label="03 Projects"
+      className="stage-section overflow-hidden"
+      style={{ perspective: '1500px', perspectiveOrigin: '42% 50%' }}
+    >
+      <div className="tilt absolute inset-0" style={{ transition: 'transform 260ms ease-out' }}>
+        {projects.map((project, i) => (
+          <DeckSlab key={project.slug} index={i} active={panel} viewport={viewport} variant="grid">
+            <div>
+              <CardHeader
+                eyebrow={`Project ${pad(i + 1)} / ${pad(projects.length)}`}
+                title={project.title}
+                meta={project.date}
+                rule={false}
+              />
+              <BulletList items={project.description} />
+              <TagRow tags={project.tags} />
+              <a
+                href={project.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-[26px] inline-block border-b border-ink pb-0.5 text-[12px] tracking-[0.16em] text-ink uppercase no-underline"
+              >
+                Repository
+              </a>
+            </div>
+            <ShotTile
+              src={project.image}
+              alt={`${project.title} screenshot`}
+              label={project.imageLabel}
+            />
+          </DeckSlab>
         ))}
-      </section>
-    )
-  }
-
-  return (
-    <section id="projects" className="h-full min-h-0">
-      <PanelTrack sectionId="projects">
-        {projects.map((project, index) => (
-          <ProjectSpread key={project.slug} project={project} index={index} count={projects.length} />
-        ))}
-      </PanelTrack>
+      </div>
     </section>
   )
 }
