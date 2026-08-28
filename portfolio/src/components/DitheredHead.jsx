@@ -179,6 +179,7 @@ export default function DitheredHead({
     // ---- load ----
     let head = null;
     let disposed = false;
+    let rotationY = 0;
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('/draco/');
     const gltfLoader = new GLTFLoader();
@@ -230,6 +231,33 @@ export default function DitheredHead({
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0 });
     io.observe(host);
 
+    // ---- drag-to-rotate (mouse only — touch stays reserved for section swipe) ----
+    let dragging = false;
+    let lastX = 0;
+    const onPointerDown = (e) => {
+      if (e.pointerType !== 'mouse' || !head) return;
+      dragging = true;
+      lastX = e.clientX;
+      host.style.cursor = 'grabbing';
+      host.setPointerCapture(e.pointerId);
+    };
+    const onPointerMove = (e) => {
+      if (!dragging) return;
+      rotationY += (e.clientX - lastX) * 0.008;
+      lastX = e.clientX;
+    };
+    const onPointerUp = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      host.style.cursor = 'grab';
+      if (host.hasPointerCapture(e.pointerId)) host.releasePointerCapture(e.pointerId);
+    };
+    host.style.cursor = 'grab';
+    host.addEventListener('pointerdown', onPointerDown);
+    host.addEventListener('pointermove', onPointerMove);
+    host.addEventListener('pointerup', onPointerUp);
+    host.addEventListener('pointercancel', onPointerUp);
+
     let raf = 0, last = 0, prev = performance.now();
     const draw = () => {
       renderer.setRenderTarget(rt);
@@ -255,7 +283,10 @@ export default function DitheredHead({
       const dt = Math.min((now - prev) / 1000, 0.25);
       last = now; prev = now;
 
-      if (head && !reduced) head.rotation.y += p.speed * dt;
+      if (head) {
+        if (!dragging && !reduced) rotationY += p.speed * dt;
+        head.rotation.y = rotationY;
+      }
       draw();
     };
     raf = requestAnimationFrame(tick);
@@ -265,6 +296,10 @@ export default function DitheredHead({
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      host.removeEventListener('pointerdown', onPointerDown);
+      host.removeEventListener('pointermove', onPointerMove);
+      host.removeEventListener('pointerup', onPointerUp);
+      host.removeEventListener('pointercancel', onPointerUp);
       rt.dispose();
       depthTexture.dispose();
       postMat.dispose();

@@ -59,10 +59,10 @@
   --slab-cols: 1fr 250px;
   --slab-gap: 40px;
 
-  --about-cols: 250px 1fr;
-  --about-gap: 44px;
-  --about-img-w: 250px;
-  --about-img-h: 312px;
+  --about-img-w: clamp(220px, 34vw, 490px);
+  --about-img-h: clamp(275px, 42.5vw, 612px);
+  --about-cols: var(--about-img-w) 1fr;
+  --about-gap: clamp(32px, 5vw, 74px);
 
   --skills-cols: repeat(3, minmax(0, 1fr));
   --skills-gap: 32px;
@@ -80,7 +80,7 @@
   --nav-ty: -50%;
   --nav-align: flex-end;
   --nav-just: flex-end;
-  --nav-gap: 14px;
+  --nav-gap: 17px;
 
   --counter-bottom: 30px;
   --folio-top: 34px;
@@ -106,9 +106,9 @@
     --slab-gap: 20px;
 
     --about-cols: 1fr;
-    --about-gap: 18px;
-    --about-img-w: 112px;
-    --about-img-h: 140px;
+    --about-gap: 22px;
+    --about-img-w: 200px;
+    --about-img-h: 250px;
 
     --skills-cols: repeat(2, minmax(0, 1fr));
     --skills-gap: 20px;
