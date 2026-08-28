@@ -51,7 +51,11 @@ export default function About() {
     >
       <div
         className="tilt grid w-full items-center"
-        style={{ gridTemplateColumns: 'var(--about-cols)', gap: 'var(--about-gap)' }}
+        style={{
+          gridTemplateColumns: 'var(--about-cols)',
+          gap: 'var(--about-gap)',
+          marginTop: 'var(--about-shift-y)',
+        }}
       >
         <div
           className="mx-auto block overflow-hidden"
@@ -64,7 +68,7 @@ export default function About() {
                 padding={1.06}
                 yOffset={0.1}
                 speed={0.25}
-                dotSize={isMobile ? 5 : 3}
+                dotSize={isMobile ? 4 : 3}
                 transparent
                 className="h-full w-full"
               />
