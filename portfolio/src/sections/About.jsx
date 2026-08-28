@@ -35,7 +35,7 @@ export default function About() {
       }}
     >
       <div
-        className="tilt grid w-full items-center"
+        className="grid w-full items-center"
         style={{
           gridTemplateColumns: 'var(--about-cols)',
           gap: 'var(--about-gap)',
@@ -62,7 +62,7 @@ export default function About() {
             <PortraitFallback />
           )}
         </div>
-        <div>
+        <div className="tilt">
           <p className="m-0 mb-3.5 text-[11px] font-medium tracking-[0.24em] text-chalk uppercase">
             About
           </p>
