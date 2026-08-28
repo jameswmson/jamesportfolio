@@ -39,6 +39,7 @@ export default function DitheredHead({
   fps = 12,
   speed = 0.42,         // radians/sec
   padding = 1.06,
+  transparent = false,  // when true, ground is punched out instead of painted
   className = '',
 }) {
   const hostRef = useRef(null);
@@ -55,8 +56,13 @@ export default function DitheredHead({
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      alpha: transparent,
+      premultipliedAlpha: false,
+    });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    if (transparent) renderer.setClearAlpha(0);
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
     host.appendChild(renderer.domElement);
@@ -126,6 +132,7 @@ export default function DitheredHead({
         uFar: { value: camera.far },
         uGround: { value: hexToVec3(ground) },
         uDot: { value: hexToVec3(dot) },
+        uTransparent: { value: transparent ? 1 : 0 },
       },
       vertexShader: /* glsl */ `
         varying vec2 vUv;
@@ -133,7 +140,7 @@ export default function DitheredHead({
       fragmentShader: /* glsl */ `
         uniform sampler2D tDiffuse, tDepth;
         uniform vec2 uRes;
-        uniform float uDpr, uScale, uLow, uHigh, uAOStrength, uAORadius, uNear, uFar;
+        uniform float uDpr, uScale, uLow, uHigh, uAOStrength, uAORadius, uNear, uFar, uTransparent;
         uniform vec3 uGround, uDot;
         varying vec2 vUv;
 
@@ -174,15 +181,21 @@ export default function DitheredHead({
           lum = smoothstep(uLow, uHigh, lum * ao);
 
           // background stays clean: far depth means nothing was drawn
-          if (d0 > uFar * 0.9) { gl_FragColor = vec4(uGround, 1.0); return; }
+          if (d0 > uFar * 0.9) {
+            gl_FragColor = vec4(uGround, 1.0 - uTransparent);
+            return;
+          }
 
           float on = step(bayer(cell), lum);
 
           // round dots rather than square cells
           vec2 f = fract(gl_FragCoord.xy / (uScale * uDpr)) - 0.5;
           float r = 1.0 - smoothstep(0.36, 0.46, length(f));
+          float coverage = on * r;
 
-          gl_FragColor = vec4(mix(uGround, uDot, on * r), 1.0);
+          // opaque: paint ground everywhere, dots on top (unchanged look)
+          // transparent: ground is punched out, only dots are drawn
+          gl_FragColor = vec4(mix(uGround, uDot, coverage), mix(1.0, coverage, uTransparent));
         }`,
     });
     post.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
@@ -319,7 +332,7 @@ export default function DitheredHead({
       dracoLoader.dispose();
       if (renderer.domElement.parentNode) host.removeChild(renderer.domElement);
     };
-  }, [src, padding]);
+  }, [src, padding, transparent]);
 
   return <div ref={hostRef} className={className} style={{ width: '100%', height: '100%' }} />;
 }
