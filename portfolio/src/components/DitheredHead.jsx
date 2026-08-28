@@ -39,6 +39,7 @@ export default function DitheredHead({
   fps = 12,
   speed = 0.42,         // radians/sec
   padding = 1.06,
+  yOffset = 0,           // camera + look-at height, for headroom framing
   transparent = false,  // when true, ground is punched out instead of painted
   className = '',
 }) {
@@ -233,6 +234,8 @@ export default function DitheredHead({
 
       const halfFov = THREE.MathUtils.degToRad(camera.fov) / 2;
       camera.position.z = (size.y / 2 / Math.tan(halfFov)) * padding;
+      camera.position.y = yOffset;
+      camera.lookAt(0, yOffset, 0);
       camera.updateProjectionMatrix();
     });
 
@@ -332,7 +335,7 @@ export default function DitheredHead({
       dracoLoader.dispose();
       if (renderer.domElement.parentNode) host.removeChild(renderer.domElement);
     };
-  }, [src, padding, transparent]);
+  }, [src, padding, yOffset, transparent]);
 
   return <div ref={hostRef} className={className} style={{ width: '100%', height: '100%' }} />;
 }
