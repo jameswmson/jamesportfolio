@@ -46,9 +46,9 @@ export default function About() {
             <Suspense fallback={<PortraitFallback />}>
               <DitheredHead
                 src="/head.glb"
-                padding={1.55}
-                yOffset={0.38}
-                speed={2.9}
+                padding={1.06}
+                yOffset={0.1}
+                speed={0.25}
                 transparent
                 className="h-full w-full"
               />
