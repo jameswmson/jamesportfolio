@@ -1,67 +1,39 @@
-import { motion } from 'framer-motion'
-import Hairline from '../components/Hairline.jsx'
-import MaskHeadline from '../components/MaskHeadline.jsx'
+import CenterSlab from '../components/CenterSlab.jsx'
 import { skillGroups } from '../data/skills.js'
-import { useStage } from '../context/StageContext.jsx'
-import { typeEase } from '../motion/easing.js'
 
-export default function Skills() {
-  const { reducedMotion, isDesktop, section, sectionDir, lastTravel } = useStage()
-  const active = !isDesktop || section.id === 'skills'
-  const offsetY = lastTravel === 'section' && isDesktop ? sectionDir * 24 : 0
-
+export default function Skills({ viewport }) {
   return (
     <section
       id="skills"
-      className={`flex min-h-full flex-col justify-center px-[clamp(1.5rem,6vw,5rem)] py-20 ${
-        isDesktop ? 'h-full overflow-y-auto' : 'min-h-dvh'
-      }`}
+      data-screen-label="06 Skills"
+      className="stage-section flex items-center justify-center overflow-hidden"
+      style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: '1500px' }}
     >
-      <motion.div
-        className="mx-auto w-full max-w-6xl"
-        initial={reducedMotion ? false : { y: offsetY }}
-        animate={{ y: 0 }}
-        transition={{ duration: reducedMotion ? 0 : 0.45, ease: typeEase }}
-      >
-        <p className="mb-6 font-sans text-[11px] font-medium tracking-[0.22em] text-folio uppercase">
-          Skills
-        </p>
-        <MaskHeadline
-          id="heading-skills"
-          active={active}
-          reducedMotion={reducedMotion}
-          className="font-serif text-5xl leading-[1.05] font-bold tracking-tight text-ink md:text-6xl lg:text-7xl"
+      <CenterSlab viewport={viewport}>
+        <p className="eyebrow m-0 mb-3.5 text-folio">Skills</p>
+        <h2 className="card-title m-0">Skills</h2>
+        <p className="card-body mt-5 mb-0">Languages and tools I use most often.</p>
+        <div
+          className="mt-[34px] grid"
+          style={{ gridTemplateColumns: 'var(--skills-cols)', gap: 'var(--skills-gap)' }}
         >
-          Skills
-        </MaskHeadline>
-        <Hairline active={active} reducedMotion={reducedMotion} className="mt-8 max-w-xs" />
-        <p className="mt-6 max-w-lg text-muted">Languages and tools I use most often.</p>
-        <div className="mt-12 grid gap-10 sm:grid-cols-3">
-          {skillGroups.map((group, gi) => (
-            <motion.div
-              key={group.title}
-              initial={reducedMotion ? false : { y: 16, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                duration: reducedMotion ? 0 : 0.45,
-                delay: reducedMotion || !active ? 0 : 0.08 * gi,
-                ease: typeEase,
-              }}
-            >
-              <h3 className="font-sans text-[11px] font-medium tracking-[0.2em] text-folio uppercase">
+          {skillGroups.map((group) => (
+            <div key={group.title}>
+              <h3 className="m-0 mb-3.5 text-[10.5px] font-medium tracking-[0.2em] text-folio uppercase">
                 {group.title}
               </h3>
-              <ul className="mt-4 space-y-2">
-                {group.items.map((skill) => (
-                  <li key={skill} className="text-base text-ink md:text-lg">
-                    {skill}
-                  </li>
+              <ul
+                className="m-0 flex list-none flex-col gap-[7px] p-0 text-ink"
+                style={{ fontSize: 'var(--card-body)' }}
+              >
+                {group.items.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </CenterSlab>
     </section>
   )
 }
