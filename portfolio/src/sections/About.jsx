@@ -36,15 +36,27 @@ export default function About() {
     >
       <div
         className="tilt grid w-full items-center"
-        style={{ gridTemplateColumns: 'var(--about-cols)', gap: 'var(--about-gap)' }}
+        style={{
+          gridTemplateColumns: 'var(--about-cols)',
+          gap: 'var(--about-gap)',
+          marginTop: 'var(--about-shift-y)',
+        }}
       >
         <div
-          className="block overflow-hidden"
-          style={{ width: 'var(--about-img-w)', height: 'var(--about-img-h)' }}
+          className="mx-auto block overflow-hidden"
+          style={{ width: 'var(--about-img-w)', aspectRatio: '1 / 1' }}
         >
           {webglOk ? (
             <Suspense fallback={<PortraitFallback />}>
-              <DitheredHead src="/head.glb" speed={0} transparent className="h-full w-full" />
+              <DitheredHead
+                src="/head.glb"
+                padding={1.06}
+                yOffset={0.1}
+                speed={0.25}
+                dotSize={3}
+                transparent
+                className="h-full w-full"
+              />
             </Suspense>
           ) : (
             <PortraitFallback />
