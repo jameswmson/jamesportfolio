@@ -5,7 +5,7 @@ export default function Hero() {
     <section
       id="home"
       data-screen-label="01 Hero"
-      className="stage-section flex flex-col justify-end"
+      className="stage-section flex flex-col justify-center"
       style={{ padding: 'var(--hero-pad)', perspective: '1300px' }}
     >
       <p className="m-0 mb-[26px] text-[11px] font-medium tracking-[0.24em] text-chalk uppercase">

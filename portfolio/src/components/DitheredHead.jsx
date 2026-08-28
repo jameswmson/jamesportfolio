@@ -3,6 +3,17 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
+// THREE.Color auto-converts sRGB hex into linear working-space values; that's
+// correct for lit surfaces but wrong here, since uGround/uDot are written to
+// the screen verbatim by a raw ShaderMaterial with no output re-encoding. A
+// plain Vector3 of the untouched 0-1 sRGB channels keeps ground/dot matching
+// the CSS hex they're set to (e.g. the page background) instead of rendering
+// visibly darker.
+function hexToVec3(hex) {
+  const v = parseInt(hex.replace('#', ''), 16);
+  return new THREE.Vector3(((v >> 16) & 255) / 255, ((v >> 8) & 255) / 255, (v & 255) / 255);
+}
+
 /**
  * DitheredHead
  *
@@ -28,6 +39,7 @@ export default function DitheredHead({
   fps = 12,
   speed = 0.42,         // radians/sec
   padding = 1.06,
+  transparent = false,  // when true, ground is punched out instead of painted
   className = '',
 }) {
   const hostRef = useRef(null);
@@ -44,8 +56,13 @@ export default function DitheredHead({
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
-    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      alpha: transparent,
+      premultipliedAlpha: false,
+    });
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    if (transparent) renderer.setClearAlpha(0);
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
     host.appendChild(renderer.domElement);
@@ -113,8 +130,9 @@ export default function DitheredHead({
         uAORadius: { value: aoRadius },
         uNear: { value: camera.near },
         uFar: { value: camera.far },
-        uGround: { value: new THREE.Color(ground) },
-        uDot: { value: new THREE.Color(dot) },
+        uGround: { value: hexToVec3(ground) },
+        uDot: { value: hexToVec3(dot) },
+        uTransparent: { value: transparent ? 1 : 0 },
       },
       vertexShader: /* glsl */ `
         varying vec2 vUv;
@@ -122,7 +140,7 @@ export default function DitheredHead({
       fragmentShader: /* glsl */ `
         uniform sampler2D tDiffuse, tDepth;
         uniform vec2 uRes;
-        uniform float uDpr, uScale, uLow, uHigh, uAOStrength, uAORadius, uNear, uFar;
+        uniform float uDpr, uScale, uLow, uHigh, uAOStrength, uAORadius, uNear, uFar, uTransparent;
         uniform vec3 uGround, uDot;
         varying vec2 vUv;
 
@@ -163,15 +181,21 @@ export default function DitheredHead({
           lum = smoothstep(uLow, uHigh, lum * ao);
 
           // background stays clean: far depth means nothing was drawn
-          if (d0 > uFar * 0.9) { gl_FragColor = vec4(uGround, 1.0); return; }
+          if (d0 > uFar * 0.9) {
+            gl_FragColor = vec4(uGround, 1.0 - uTransparent);
+            return;
+          }
 
           float on = step(bayer(cell), lum);
 
           // round dots rather than square cells
           vec2 f = fract(gl_FragCoord.xy / (uScale * uDpr)) - 0.5;
           float r = 1.0 - smoothstep(0.36, 0.46, length(f));
+          float coverage = on * r;
 
-          gl_FragColor = vec4(mix(uGround, uDot, on * r), 1.0);
+          // opaque: paint ground everywhere, dots on top (unchanged look)
+          // transparent: ground is punched out, only dots are drawn
+          gl_FragColor = vec4(mix(uGround, uDot, coverage), mix(1.0, coverage, uTransparent));
         }`,
     });
     post.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
@@ -179,6 +203,7 @@ export default function DitheredHead({
     // ---- load ----
     let head = null;
     let disposed = false;
+    let rotationY = 0;
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('/draco/');
     const gltfLoader = new GLTFLoader();
@@ -230,6 +255,33 @@ export default function DitheredHead({
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0 });
     io.observe(host);
 
+    // ---- drag-to-rotate (mouse only — touch stays reserved for section swipe) ----
+    let dragging = false;
+    let lastX = 0;
+    const onPointerDown = (e) => {
+      if (e.pointerType !== 'mouse' || !head) return;
+      dragging = true;
+      lastX = e.clientX;
+      host.style.cursor = 'grabbing';
+      host.setPointerCapture(e.pointerId);
+    };
+    const onPointerMove = (e) => {
+      if (!dragging) return;
+      rotationY += (e.clientX - lastX) * 0.008;
+      lastX = e.clientX;
+    };
+    const onPointerUp = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      host.style.cursor = 'grab';
+      if (host.hasPointerCapture(e.pointerId)) host.releasePointerCapture(e.pointerId);
+    };
+    host.style.cursor = 'grab';
+    host.addEventListener('pointerdown', onPointerDown);
+    host.addEventListener('pointermove', onPointerMove);
+    host.addEventListener('pointerup', onPointerUp);
+    host.addEventListener('pointercancel', onPointerUp);
+
     let raf = 0, last = 0, prev = performance.now();
     const draw = () => {
       renderer.setRenderTarget(rt);
@@ -247,15 +299,18 @@ export default function DitheredHead({
       postMat.uniforms.uHigh.value = p.high;
       postMat.uniforms.uAOStrength.value = p.aoStrength;
       postMat.uniforms.uAORadius.value = p.aoRadius;
-      postMat.uniforms.uGround.value.set(p.ground);
-      postMat.uniforms.uDot.value.set(p.dot);
+      postMat.uniforms.uGround.value.copy(hexToVec3(p.ground));
+      postMat.uniforms.uDot.value.copy(hexToVec3(p.dot));
 
       if (!visible) { prev = now; return; }
       if (now - last < 1000 / p.fps) return;
       const dt = Math.min((now - prev) / 1000, 0.25);
       last = now; prev = now;
 
-      if (head && !reduced) head.rotation.y += p.speed * dt;
+      if (head) {
+        if (!dragging && !reduced) rotationY += p.speed * dt;
+        head.rotation.y = rotationY;
+      }
       draw();
     };
     raf = requestAnimationFrame(tick);
@@ -265,6 +320,10 @@ export default function DitheredHead({
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      host.removeEventListener('pointerdown', onPointerDown);
+      host.removeEventListener('pointermove', onPointerMove);
+      host.removeEventListener('pointerup', onPointerUp);
+      host.removeEventListener('pointercancel', onPointerUp);
       rt.dispose();
       depthTexture.dispose();
       postMat.dispose();
@@ -273,7 +332,7 @@ export default function DitheredHead({
       dracoLoader.dispose();
       if (renderer.domElement.parentNode) host.removeChild(renderer.domElement);
     };
-  }, [src, padding]);
+  }, [src, padding, transparent]);
 
   return <div ref={hostRef} className={className} style={{ width: '100%', height: '100%' }} />;
 }

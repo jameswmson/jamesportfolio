@@ -37,7 +37,7 @@ export default function App() {
         }}
       >
         <Hero />
-        <About viewport={viewport} />
+        <About />
         <Projects panel={panels[2]} viewport={viewport} />
         <Experience panel={panels[3]} viewport={viewport} />
         <Leadership panel={panels[4]} viewport={viewport} />
