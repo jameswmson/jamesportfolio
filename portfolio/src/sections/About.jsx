@@ -40,11 +40,18 @@ export default function About() {
       >
         <div
           className="block overflow-hidden"
-          style={{ width: 'var(--about-img-w)', height: 'var(--about-img-h)' }}
+          style={{ width: 'var(--about-img-w)', aspectRatio: '1 / 1' }}
         >
           {webglOk ? (
             <Suspense fallback={<PortraitFallback />}>
-              <DitheredHead src="/head.glb" speed={0} transparent className="h-full w-full" />
+              <DitheredHead
+                src="/head.glb"
+                padding={1.55}
+                yOffset={0.38}
+                speed={2.9}
+                transparent
+                className="h-full w-full"
+              />
             </Suspense>
           ) : (
             <PortraitFallback />

@@ -60,7 +60,6 @@
   --slab-gap: 40px;
 
   --about-img-w: clamp(220px, 34vw, 490px);
-  --about-img-h: clamp(275px, 42.5vw, 612px);
   --about-cols: var(--about-img-w) 1fr;
   --about-gap: clamp(32px, 5vw, 74px);
 
@@ -108,7 +107,6 @@
     --about-cols: 1fr;
     --about-gap: 22px;
     --about-img-w: 200px;
-    --about-img-h: 250px;
 
     --skills-cols: repeat(2, minmax(0, 1fr));
     --skills-gap: 20px;
