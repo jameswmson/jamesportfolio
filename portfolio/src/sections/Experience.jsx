@@ -1,56 +1,34 @@
-import PanelTrack from '../components/PanelTrack.jsx'
-import SpreadArticle from '../components/SpreadArticle.jsx'
+import BulletList from '../components/BulletList.jsx'
+import CardHeader from '../components/CardHeader.jsx'
+import DeckSlab from '../components/DeckSlab.jsx'
+import { pad } from '../lib/deck.js'
 import { experience } from '../data/experience.js'
-import { headingIdFor } from '../data/sections.js'
-import { useStage } from '../context/StageContext.jsx'
 
-function ExperienceSpread({ item, index, count }) {
-  const { isDesktop, section, panelIndex, reducedMotion, panelDir, sectionDir, lastTravel } =
-    useStage()
-  const active = !isDesktop || (section.id === 'experience' && panelIndex === index)
-  const offsetX = isDesktop && lastTravel === 'panel' ? panelDir * 24 : 0
-  const offsetY = isDesktop && lastTravel === 'section' ? sectionDir * 24 : 0
-  const meta = [item.org, item.dates].filter(Boolean).join('  ·  ')
-
+export default function Experience({ panel, viewport }) {
   return (
-    <SpreadArticle
-      kicker={`Experience ${String(index + 1).padStart(2, '0')} / ${String(count).padStart(2, '0')}`}
-      title={item.title}
-      headingId={headingIdFor({ id: 'experience', items: experience }, index)}
-      meta={meta}
-      description={item.description}
-      tags={item.tags}
-      active={active}
-      reducedMotion={reducedMotion}
-      offsetX={offsetX}
-      offsetY={offsetY}
-      placeholder={item.placeholder}
-    />
-  )
-}
-
-export default function Experience() {
-  const { isDesktop } = useStage()
-
-  if (!isDesktop) {
-    return (
-      <section id="experience" className="min-h-dvh">
-        {experience.map((item, index) => (
-          <div key={item.slug} className="min-h-dvh border-t border-rule">
-            <ExperienceSpread item={item} index={index} count={experience.length} />
-          </div>
+    <section
+      id="experience"
+      data-screen-label="04 Experience"
+      className="stage-section overflow-hidden"
+      style={{ perspective: '1500px', perspectiveOrigin: '42% 50%' }}
+    >
+      <div className="tilt absolute inset-0" style={{ transition: 'transform 260ms ease-out' }}>
+        {experience.map((item, i) => (
+          <DeckSlab key={item.title + i} index={i} active={panel} viewport={viewport} variant="stack">
+            <CardHeader
+              eyebrow={`Experience ${pad(i + 1)} / ${pad(experience.length)}`}
+              title={item.title}
+              meta={`${item.org}  ·  ${item.date}`}
+            />
+            <BulletList items={item.bullets} className="mt-[22px] max-w-[620px]" />
+            {item.placeholder ? (
+              <p className="mt-[26px] mb-0 font-mono text-[10px] leading-none tracking-[0.16em] text-chalk uppercase">
+                Awaiting real content
+              </p>
+            ) : null}
+          </DeckSlab>
         ))}
-      </section>
-    )
-  }
-
-  return (
-    <section id="experience" className="h-full min-h-0">
-      <PanelTrack sectionId="experience">
-        {experience.map((item, index) => (
-          <ExperienceSpread key={item.slug} item={item} index={index} count={experience.length} />
-        ))}
-      </PanelTrack>
+      </div>
     </section>
   )
 }

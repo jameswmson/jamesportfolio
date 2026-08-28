@@ -1,58 +1,29 @@
-import { Github, Linkedin, Mail, FileText } from 'lucide-react'
-import EditorialLink from '../components/EditorialLink.jsx'
-import { useStage } from '../context/StageContext.jsx'
-
-const githubUrl =
-  import.meta.env.VITE_GITHUB_URL ?? 'https://github.com/JamesWiiiiamson'
-const linkedinUrl =
-  import.meta.env.VITE_LINKEDIN_URL ?? 'https://www.linkedin.com/in/james-williamson9573/'
-const mailto =
-  import.meta.env.VITE_CONTACT_EMAIL ?? 'mailto:Jaswmson@gmail.com'
-
-const links = [
-  { href: githubUrl, label: 'GitHub', Icon: Github },
-  { href: linkedinUrl, label: 'LinkedIn', Icon: Linkedin },
-  { href: mailto, label: 'Email', Icon: Mail },
-  { href: '/resume.pdf', label: 'Resume', Icon: FileText },
-]
+import { contactLinks, email } from '../data/contact.js'
 
 export default function Contact() {
-  const { isDesktop } = useStage()
-
   return (
     <section
       id="contact"
-      className={`flex min-h-full flex-col justify-center px-[clamp(1.5rem,6vw,5rem)] py-20 ${
-        isDesktop ? 'h-full overflow-y-auto' : 'min-h-dvh pb-28'
-      }`}
+      data-screen-label="07 Contact"
+      className="stage-section flex flex-col justify-center"
+      style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: '1300px' }}
     >
-      <div className="mx-auto w-full max-w-4xl">
-        <p className="mb-6 font-sans text-[11px] font-medium tracking-[0.22em] text-folio uppercase">
-          Contact
-        </p>
-        <h2
-          id="heading-contact"
-          tabIndex={-1}
-          className="font-serif text-5xl leading-[1.05] font-bold tracking-tight text-ink outline-none md:text-6xl lg:text-7xl"
-        >
-          Contact
-        </h2>
-        <div className="mt-8 h-px max-w-xs bg-rule" aria-hidden />
-        <p className="mt-6 max-w-lg text-lg text-muted">Check out my links or my resume.</p>
-        <ul className="mt-12 space-y-5">
-          {links.map((link) => {
-            const Glyph = link.Icon
-            return (
-              <li key={link.label}>
-                <EditorialLink href={link.href} className="inline-flex items-center gap-3 text-xl md:text-2xl">
-                  <Glyph className="h-5 w-5 shrink-0" aria-hidden />
-                  {link.label}
-                </EditorialLink>
-              </li>
-            )
-          })}
-        </ul>
+      <p className="m-0 mb-6 text-[11px] font-medium tracking-[0.24em] text-chalk uppercase">
+        Contact
+      </p>
+      <div className="tilt flex flex-col gap-1">
+        {contactLinks.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            className="self-start font-serif leading-[1.04] font-bold tracking-[-0.03em] text-paper no-underline transition-[text-shadow,transform] duration-200 ease-out [text-shadow:3px_3px_0_#57534E,6px_6px_0_#44403C,9px_9px_0_#302B27] hover:-translate-x-1 hover:-translate-y-1 hover:[text-shadow:5px_5px_0_#78716C,10px_10px_0_#57534E,15px_15px_0_#3F3A35]"
+            style={{ fontSize: 'var(--contact-fs)' }}
+          >
+            {link.label}
+          </a>
+        ))}
       </div>
+      <p className="mt-[34px] mb-0 text-[12px] tracking-[0.06em] text-chalk">{email}</p>
     </section>
   )
 }

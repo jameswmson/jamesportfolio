@@ -1,46 +1,25 @@
-import { motion } from 'framer-motion'
-import MaskHeadline from '../components/MaskHeadline.jsx'
-import { useStage } from '../context/StageContext.jsx'
-import { typeEase } from '../motion/easing.js'
+import ExtrudedText from '../components/ExtrudedText.jsx'
 
 export default function Hero() {
-  const { reducedMotion, hasInteracted, isDesktop } = useStage()
-
   return (
     <section
-      id="hero"
-      className={`relative flex min-h-full flex-col justify-end px-[clamp(1.5rem,6vw,5rem)] ${
-        isDesktop ? 'h-full pb-24' : 'min-h-dvh pb-28 pt-24'
-      }`}
+      id="home"
+      data-screen-label="01 Hero"
+      className="stage-section flex flex-col justify-end"
+      style={{ padding: 'var(--hero-pad)', perspective: '1300px' }}
     >
-      <p className="mb-6 font-sans text-[11px] font-medium tracking-[0.22em] text-folio uppercase">
+      <p className="m-0 mb-[26px] text-[11px] font-medium tracking-[0.24em] text-chalk uppercase">
         Portfolio
       </p>
-      <MaskHeadline
-        as="h1"
-        id="heading-hero"
-        active
-        reducedMotion={reducedMotion}
-        className="max-w-[14ch] font-serif text-[clamp(3.25rem,9vw,8.5rem)] leading-[0.9] font-bold tracking-[-0.03em] text-ink"
-      >
-        James Williamson
-      </MaskHeadline>
-      <motion.p
-        className="mt-8 max-w-xl font-sans text-lg text-muted md:text-xl"
-        initial={reducedMotion ? false : { y: 16, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: reducedMotion ? 0 : 0.45, delay: reducedMotion ? 0 : 0.08, ease: typeEase }}
-      >
+      <ExtrudedText lines={['James', 'Williamson']} />
+      <div className="mt-8 h-px w-full max-w-[520px] bg-[linear-gradient(90deg,#78716C,transparent)]" />
+      <p className="mt-[26px] mb-0 text-stone-300" style={{ fontSize: 'var(--hero-sub)' }}>
         Computer Science Student @ Western University
-      </motion.p>
-      <motion.p
-        className={`mt-16 font-sans text-[11px] tracking-[0.28em] text-folio uppercase ${
-          hasInteracted ? 'opacity-0' : 'opacity-100'
-        } transition-opacity duration-500`}
-        aria-hidden={hasInteracted}
-      >
-        Scroll
-      </motion.p>
+      </p>
+      <p className="mt-[34px] mb-0 text-[10.5px] tracking-[0.28em] text-chalk uppercase">
+        <span className="max-[820px]:hidden">Scroll</span>
+        <span className="hidden max-[820px]:inline">Swipe</span>
+      </p>
     </section>
   )
 }
