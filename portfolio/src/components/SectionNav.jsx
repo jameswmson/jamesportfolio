@@ -1,63 +1,49 @@
-import { LayoutGroup, motion } from 'framer-motion'
-import { useStage } from '../context/StageContext.jsx'
+import { sections } from '../data/sections.js'
 
-export default function SectionNav() {
-  const { SECTIONS, sectionIndex, goSection, isDesktop, reducedMotion } = useStage()
-
-  const onClick = (i, id) => {
-    if (isDesktop) {
-      goSection(i)
-      return
-    }
-    document.getElementById(id)?.scrollIntoView({
-      behavior: reducedMotion ? 'auto' : 'smooth',
-    })
-  }
-
+export default function SectionNav({ section, onSelect }) {
   return (
     <nav
-      className={
-        isDesktop
-          ? 'pointer-events-auto fixed top-1/2 right-5 z-40 hidden -translate-y-1/2 md:block lg:right-8'
-          : 'pointer-events-auto fixed bottom-0 left-0 right-0 z-40 border-t border-rule bg-paper/95 px-3 py-2 backdrop-blur-sm md:hidden'
-      }
       aria-label="Sections"
+      className="chrome-invert fixed z-[300]"
+      style={{
+        left: 'var(--nav-left)',
+        right: 'var(--nav-right)',
+        top: 'var(--nav-top)',
+        bottom: 'var(--nav-bottom)',
+        transform: 'translateY(var(--nav-ty))',
+      }}
     >
-      <LayoutGroup>
       <ul
-        className={
-          isDesktop ? 'flex flex-col items-end gap-3' : 'flex items-center justify-between gap-1 overflow-x-auto'
-        }
+        className="m-0 flex list-none flex-wrap p-0"
+        style={{
+          flexDirection: 'var(--nav-dir)',
+          alignItems: 'var(--nav-align)',
+          justifyContent: 'var(--nav-just)',
+          gap: 'var(--nav-gap)',
+        }}
       >
-        {SECTIONS.map((section, i) => {
-          const active = i === sectionIndex
+        {sections.map((s, i) => {
+          const on = i === section
           return (
-            <li key={section.id} className="relative shrink-0">
+            <li key={s.id}>
               <button
                 type="button"
-                onClick={() => onClick(i, section.id)}
-                className={`relative cursor-pointer px-1 py-1 text-[10px] font-medium tracking-[0.18em] uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-[11px] ${
-                  active ? 'text-ink' : 'text-folio'
-                }`}
-                aria-current={active ? 'true' : undefined}
-                aria-label={section.label}
+                onClick={() => onSelect(i)}
+                aria-current={on ? 'true' : undefined}
+                className="cursor-pointer border-0 bg-transparent p-0 py-0.5 font-sans uppercase transition-[font-size,letter-spacing] duration-200"
+                style={{
+                  fontSize: on ? '11px' : '9px',
+                  fontWeight: on ? 700 : 400,
+                  letterSpacing: on ? '0.22em' : '0.18em',
+                  color: 'inherit',
+                }}
               >
-                {isDesktop && active && (
-                  <motion.span
-                    layoutId="section-marker"
-                    className="absolute top-1/2 -left-3 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-ink"
-                    transition={
-                      reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 34 }
-                    }
-                  />
-                )}
-                {section.label}
+                {s.label}
               </button>
             </li>
           )
         })}
       </ul>
-      </LayoutGroup>
     </nav>
   )
 }

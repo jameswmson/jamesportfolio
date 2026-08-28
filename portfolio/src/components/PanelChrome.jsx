@@ -1,43 +1,42 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useStage } from '../context/StageContext.jsx'
+import { pad } from '../lib/deck.js'
 
-function pad(n) {
-  return String(n).padStart(2, '0')
-}
-
-export default function PanelChrome() {
-  const { section, panelIndex, panelCount, stepPanel, isDesktop } = useStage()
-
-  if (!isDesktop || panelCount < 2) return null
-
+/** Prev / counter / next for sections that hold more than one card. */
+export default function PanelChrome({ panel, count, onStep }) {
+  const many = count > 1
   return (
-    <div className="pointer-events-none fixed bottom-8 left-0 right-0 z-40 flex justify-center px-6">
-      <div className="pointer-events-auto flex items-center gap-5 text-folio">
-        <button
-          type="button"
-          onClick={() => stepPanel(-1)}
-          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-rule text-ink transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-          aria-label="Previous panel"
-        >
-          <ChevronLeft className="h-5 w-5" aria-hidden />
-        </button>
-        <p className="min-w-[4.5rem] text-center font-serif text-xl tracking-wide text-folio tabular-nums" aria-live="polite">
-          {pad(panelIndex + 1)}
-          <span className="mx-1 text-rule">/</span>
-          {pad(panelCount)}
-        </p>
-        <button
-          type="button"
-          onClick={() => stepPanel(1)}
-          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-rule text-ink transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-          aria-label="Next panel"
-        >
-          <ChevronRight className="h-5 w-5" aria-hidden />
-        </button>
-        <span className="sr-only">
-          {section.title} panel {panelIndex + 1} of {panelCount}
-        </span>
-      </div>
+    <div
+      className="chrome-invert fixed right-0 left-0 z-[300] mx-auto flex w-fit items-center justify-center gap-[18px] transition-opacity duration-[360ms]"
+      style={{
+        bottom: 'var(--counter-bottom)',
+        opacity: many ? 1 : 0,
+        pointerEvents: many ? 'auto' : 'none',
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => onStep(-1)}
+        aria-label="Previous item"
+        disabled={!many || panel === 0}
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-current bg-transparent text-inherit opacity-65 transition-opacity duration-200 hover:opacity-100 disabled:opacity-25"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      </button>
+      <span className="min-w-[78px] text-center font-serif text-[19px] tabular-nums">
+        {pad(panel + 1)} / {pad(count)}
+      </span>
+      <button
+        type="button"
+        onClick={() => onStep(1)}
+        aria-label="Next item"
+        disabled={!many || panel === count - 1}
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-current bg-transparent text-inherit opacity-65 transition-opacity duration-200 hover:opacity-100 disabled:opacity-25"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </button>
     </div>
   )
 }
