@@ -3,6 +3,17 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
+// THREE.Color auto-converts sRGB hex into linear working-space values; that's
+// correct for lit surfaces but wrong here, since uGround/uDot are written to
+// the screen verbatim by a raw ShaderMaterial with no output re-encoding. A
+// plain Vector3 of the untouched 0-1 sRGB channels keeps ground/dot matching
+// the CSS hex they're set to (e.g. the page background) instead of rendering
+// visibly darker.
+function hexToVec3(hex) {
+  const v = parseInt(hex.replace('#', ''), 16);
+  return new THREE.Vector3(((v >> 16) & 255) / 255, ((v >> 8) & 255) / 255, (v & 255) / 255);
+}
+
 /**
  * DitheredHead
  *
@@ -45,7 +56,7 @@ export default function DitheredHead({
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
-    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
     host.appendChild(renderer.domElement);
@@ -113,8 +124,8 @@ export default function DitheredHead({
         uAORadius: { value: aoRadius },
         uNear: { value: camera.near },
         uFar: { value: camera.far },
-        uGround: { value: new THREE.Color(ground) },
-        uDot: { value: new THREE.Color(dot) },
+        uGround: { value: hexToVec3(ground) },
+        uDot: { value: hexToVec3(dot) },
       },
       vertexShader: /* glsl */ `
         varying vec2 vUv;
@@ -275,8 +286,8 @@ export default function DitheredHead({
       postMat.uniforms.uHigh.value = p.high;
       postMat.uniforms.uAOStrength.value = p.aoStrength;
       postMat.uniforms.uAORadius.value = p.aoRadius;
-      postMat.uniforms.uGround.value.set(p.ground);
-      postMat.uniforms.uDot.value.set(p.dot);
+      postMat.uniforms.uGround.value.copy(hexToVec3(p.ground));
+      postMat.uniforms.uDot.value.copy(hexToVec3(p.dot));
 
       if (!visible) { prev = now; return; }
       if (now - last < 1000 / p.fps) return;
