@@ -32,9 +32,9 @@ export default function SectionNav({ section, onSelect }) {
                 aria-current={on ? 'true' : undefined}
                 className="cursor-pointer border-0 bg-transparent p-0 py-0.5 font-sans uppercase transition-[font-size,letter-spacing] duration-200"
                 style={{
-                  fontSize: on ? '11px' : '9px',
+                  fontSize: on ? '14px' : '12px',
                   fontWeight: on ? 700 : 400,
-                  letterSpacing: on ? '0.22em' : '0.18em',
+                  letterSpacing: on ? '0.2em' : '0.16em',
                   color: 'inherit',
                 }}
               >
