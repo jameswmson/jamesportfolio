@@ -44,7 +44,7 @@ export default function About() {
         >
           {webglOk ? (
             <Suspense fallback={<PortraitFallback />}>
-              <DitheredHead src="/head.glb" speed={0} className="h-full w-full" />
+              <DitheredHead src="/head.glb" speed={0} transparent className="h-full w-full" />
             </Suspense>
           ) : (
             <PortraitFallback />
