@@ -23,7 +23,7 @@ export default function Skills({ viewport }) {
                 {group.title}
               </h3>
               <ul
-                className="m-0 flex list-none flex-col gap-[7px] p-0 text-paper"
+                className="skill-list m-0 list-none p-0 text-paper"
                 style={{ fontSize: 'var(--card-body)' }}
               >
                 {group.items.map((item) => (
