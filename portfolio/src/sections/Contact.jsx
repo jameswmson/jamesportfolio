@@ -11,7 +11,7 @@ export default function Contact() {
       <p className="m-0 mb-6 text-[11px] font-medium tracking-[0.24em] text-chalk uppercase">
         Contact
       </p>
-      <div className="tilt flex flex-col gap-1">
+      <div className="tilt flex flex-col gap-1 max-[820px]:gap-3">
         {contactLinks.map((link) => (
           <a
             key={link.label}
