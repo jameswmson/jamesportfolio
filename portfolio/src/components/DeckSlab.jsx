@@ -6,13 +6,15 @@ export default function DeckSlab({ index, active, viewport, variant = 'grid', ch
   const live = index === active
   return (
     <div
-      className={`slab deck-card ${variant === 'grid' ? 'deck-grid' : 'deck-stack'}`}
+      className="slab deck-card"
       style={deckStyle(index, active, viewport)}
       aria-hidden={live ? undefined : true}
       inert={live ? undefined : ''}
     >
       <CornerTicks />
-      {children}
+      <div className={`slab-scroll ${variant === 'grid' ? 'deck-grid' : 'deck-stack'}`}>
+        {children}
+      </div>
     </div>
   )
 }
