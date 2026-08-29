@@ -98,9 +98,9 @@
   :root {
     --pad-r: 20px;
     --pad-l: 20px;
-    --hero-pad: 76px 20px 88px 20px;
-    --hero-fs: clamp(2.25rem, 11.5vw, 3.75rem);
-    --hero-h: clamp(104px, 27vw, 160px);
+    --hero-pad: 68px 20px 72px 20px;
+    --hero-fs: clamp(2.65rem, 12.5vw, 4.15rem);
+    --hero-h: calc(var(--hero-fs) * 1.88);
     --hero-sub: 16px;
 
     --slab-w: calc(100vw - 32px);
@@ -127,7 +127,7 @@
     --card-h2: 27px;
     --card-body: 13.5px;
     --tile-display: none;
-    --contact-fs: clamp(2rem, 9vw, 2.9rem);
+    --contact-fs: clamp(2.75rem, 13vw, 4rem);
 
     --nav-dir: row;
     --nav-left: 0;
@@ -139,7 +139,7 @@
     --nav-just: center;
     --nav-gap: 11px;
 
-    --counter-bottom: 64px;
+    --counter-bottom: 90px;
     --folio-top: 14px;
     --folio-left: 16px;
 
@@ -188,7 +188,7 @@
     --slab-pad: 18px 20px;
     --slab-pad-stack: 18px 20px;
     --nav-bottom: 4px;
-    --counter-bottom: 52px;
+    --counter-bottom: 76px;
     --card-h2: 24px;
     --card-body: 13px;
   }
