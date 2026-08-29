@@ -10,7 +10,7 @@ export default function Skills({ viewport }) {
       style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: '1500px' }}
     >
       <CenterSlab viewport={viewport}>
-        <p className="eyebrow m-0 mb-3.5 text-folio">Skills</p>
+        <p className="eyebrow m-0 mb-3.5 text-chalk">Skills</p>
         <h2 className="card-title m-0">Skills</h2>
         <p className="card-body mt-5 mb-0">Languages and tools I use most often.</p>
         <div
@@ -19,11 +19,11 @@ export default function Skills({ viewport }) {
         >
           {skillGroups.map((group) => (
             <div key={group.title}>
-              <h3 className="m-0 mb-3.5 text-[10.5px] font-medium tracking-[0.2em] text-folio uppercase">
+              <h3 className="m-0 mb-3.5 text-[10.5px] font-medium tracking-[0.2em] text-[#8C8070] uppercase">
                 {group.title}
               </h3>
               <ul
-                className="m-0 flex list-none flex-col gap-[7px] p-0 text-ink"
+                className="m-0 flex list-none flex-col gap-[7px] p-0 text-paper"
                 style={{ fontSize: 'var(--card-body)' }}
               >
                 {group.items.map((item) => (

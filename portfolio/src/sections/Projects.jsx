@@ -22,7 +22,7 @@ export default function Projects({ panel, viewport }) {
                 eyebrow={`Project ${pad(i + 1)} / ${pad(projects.length)}`}
                 title={project.title}
                 meta={project.date}
-                rule={false}
+                rule
               />
               <BulletList items={project.description} />
               <TagRow tags={project.tags} />
@@ -30,7 +30,7 @@ export default function Projects({ panel, viewport }) {
                 href={project.repoUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-[26px] inline-block border-b border-ink pb-0.5 text-[12px] tracking-[0.16em] text-ink uppercase no-underline"
+                className="mt-[28px] inline-block border-b border-[#78716C] pb-0.5 text-[12px] tracking-[0.16em] text-paper uppercase no-underline"
               >
                 Repository
               </a>

@@ -5,7 +5,7 @@ export default function ShotTile({ src, alt, label }) {
   }
   return (
     <div className="placeholder-tile aspect-[4/5] items-end justify-center pb-3">
-      <span className="font-mono text-[9.5px] leading-none tracking-[0.16em] text-folio uppercase">
+      <span className="font-mono text-[9.5px] leading-none tracking-[0.16em] text-[#8C8070] uppercase">
         {label}
       </span>
     </div>

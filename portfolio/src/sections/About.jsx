@@ -52,7 +52,7 @@ export default function About() {
                 src="/head.glb"
                 padding={1.06}
                 yOffset={0.1}
-                speed={0.25}
+                speed={0.6}
                 dotSize={3}
                 transparent
                 className="h-full w-full"
