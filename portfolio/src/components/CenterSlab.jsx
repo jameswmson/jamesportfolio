@@ -10,16 +10,18 @@ export default function CenterSlab({ viewport, className = '', children }) {
         position: 'relative',
         width: 'var(--slab-w)',
         maxHeight: 'var(--slab-h)',
-        overflow: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
         flex: 'none',
-        padding: 'var(--slab-pad-stack)',
         transformStyle: 'preserve-3d',
         transform: centerSlabTransform(viewport.vw, viewport.vh),
         transition: 'transform 240ms ease-out',
       }}
     >
       <CornerTicks />
-      {children}
+      <div className="slab-scroll" style={{ padding: 'var(--slab-pad-stack)' }}>
+        {children}
+      </div>
     </div>
   )
 }
