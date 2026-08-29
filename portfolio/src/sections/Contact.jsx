@@ -4,7 +4,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      data-screen-label="07 Contact"
+      data-screen-label="06 Contact"
       className="stage-section flex flex-col justify-center"
       style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: '1300px' }}
     >

@@ -5,7 +5,7 @@ export default function Skills({ viewport }) {
   return (
     <section
       id="skills"
-      data-screen-label="06 Skills"
+      data-screen-label="05 Skills"
       className="stage-section flex items-center justify-center overflow-hidden"
       style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: '1500px' }}
     >

@@ -6,17 +6,15 @@ import About from './sections/About.jsx'
 import Contact from './sections/Contact.jsx'
 import Experience from './sections/Experience.jsx'
 import Hero from './sections/Hero.jsx'
-import Leadership from './sections/Leadership.jsx'
 import Projects from './sections/Projects.jsx'
 import Skills from './sections/Skills.jsx'
 import { experience } from './data/experience.js'
-import { leadership } from './data/leadership.js'
 import { projects } from './data/projects.js'
 import { sections } from './data/sections.js'
 import { useStage } from './hooks/useStage.js'
 
 // cards per section, in section order
-const COUNTS = [1, 1, projects.length, experience.length, leadership.length, 1, 1]
+const COUNTS = [1, 1, projects.length, experience.length, 1, 1]
 
 export default function App() {
   const { section, setSection, panels, panel, panelCount, stepPanel, viewport } = useStage(COUNTS)
@@ -40,7 +38,6 @@ export default function App() {
         <About />
         <Projects panel={panels[2]} viewport={viewport} />
         <Experience panel={panels[3]} viewport={viewport} />
-        <Leadership panel={panels[4]} viewport={viewport} />
         <Skills viewport={viewport} />
         <Contact />
       </div>
