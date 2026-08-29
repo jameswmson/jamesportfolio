@@ -5,9 +5,9 @@ export default function BackdropLines() {
       viewBox="0 0 1440 900"
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-50"
+      className="backdrop-lines pointer-events-none absolute inset-0 z-0 h-full w-full"
     >
-      <g fill="none" stroke="#8C8070" strokeWidth="2">
+      <g fill="none" stroke="#8C8070">
         <path d="M0 32 C 22 16 36 40 58 20 S 78 8 88 0" opacity=".28" />
         <path d="M0 62 C 40 32 66 74 104 40 S 138 16 156 0" opacity=".22" />
         <path d="M0 92 C 62 52 96 108 148 62 S 200 22 226 0" opacity=".34" />
