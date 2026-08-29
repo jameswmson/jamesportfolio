@@ -1,4 +1,5 @@
-import { deckStyle, scrimOpacity } from '../lib/deck.js'
+import CornerTicks from './CornerTicks.jsx'
+import { deckStyle } from '../lib/deck.js'
 
 /** One paper card in a section deck. Layout comes from the variant prop. */
 export default function DeckSlab({ index, active, viewport, variant = 'grid', children }) {
@@ -10,7 +11,7 @@ export default function DeckSlab({ index, active, viewport, variant = 'grid', ch
       aria-hidden={live ? undefined : true}
       inert={live ? undefined : ''}
     >
-      <div className="deck-scrim" style={{ opacity: scrimOpacity(index, active) }} />
+      <CornerTicks />
       {children}
     </div>
   )

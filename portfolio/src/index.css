@@ -58,6 +58,8 @@
   --slab-pad-stack: 56px 60px;
   --slab-cols: 1fr 250px;
   --slab-gap: 40px;
+  --deck-shift-y: -4px;
+  --center-shift-y: -8px;
 
   --about-img-w: clamp(220px, 34vw, 490px);
   --about-cols: var(--about-img-w) 1fr;
@@ -97,13 +99,15 @@
     --hero-sub: 16px;
 
     --slab-w: calc(100vw - 32px);
-    --slab-h: calc(100dvh - 172px);
+    --slab-h: calc(100dvh - 220px);
     --slab-left: 50%;
     --slab-of: auto;
-    --slab-pad: 26px 22px;
-    --slab-pad-stack: 26px 22px;
+    --slab-pad: 24px 20px;
+    --slab-pad-stack: 24px 20px;
     --slab-cols: 1fr;
     --slab-gap: 20px;
+    --deck-shift-y: -4px;
+    --center-shift-y: -4px;
 
     --about-cols: 1fr;
     --about-gap: 22px;
@@ -122,15 +126,63 @@
     --nav-left: 0;
     --nav-right: 0;
     --nav-top: auto;
-    --nav-bottom: 12px;
+    --nav-bottom: 8px;
     --nav-ty: 0;
     --nav-align: center;
     --nav-just: center;
     --nav-gap: 11px;
 
-    --counter-bottom: 54px;
+    --counter-bottom: 64px;
     --folio-top: 14px;
     --folio-left: 16px;
+  }
+
+  .slab {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(140, 128, 112, 0.42) transparent;
+  }
+
+  .section-nav {
+    overflow: hidden;
+  }
+
+  .section-nav-list {
+    flex-wrap: nowrap;
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 0 16px;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .section-nav-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .section-nav-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+  }
+
+  .section-nav-button {
+    min-height: 44px;
+    padding-right: 8px;
+    padding-left: 8px;
+    touch-action: manipulation;
+  }
+}
+
+@media (max-width: 820px) and (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --slab-h: calc(100dvh - 184px);
+    --slab-pad: 18px 20px;
+    --slab-pad-stack: 18px 20px;
+    --nav-bottom: 4px;
+    --counter-bottom: 52px;
+    --card-h2: 24px;
+    --card-body: 13px;
   }
 }
 
@@ -169,9 +221,9 @@ a {
 }
 
 .slab {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  box-shadow: -14px 0 0 #78716C, -28px 0 0 #44403C, 0 40px 70px -20px rgba(0, 0, 0, 0.7);
+  background: #1E1B19;
+  color: var(--color-paper);
+  border: 1px solid rgba(140, 128, 112, 0.28);
   box-sizing: border-box;
 }
 
@@ -200,15 +252,6 @@ a {
   justify-content: center;
 }
 
-.deck-scrim {
-  position: absolute;
-  inset: 0;
-  background: #1C1917;
-  pointer-events: none;
-  z-index: 9;
-  transition: opacity 640ms ease;
-}
-
 .eyebrow {
   font-size: 11px;
   font-weight: 500;
@@ -222,31 +265,34 @@ a {
   line-height: 1.02;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: var(--color-ink);
-  text-shadow: 3px 3px 0 var(--color-rule);
+  color: var(--color-paper);
+  text-shadow: 3px 3px 0 #57534E, 6px 6px 0 #44403C, 9px 9px 0 #302B27;
 }
 
 .card-body {
   font-size: var(--card-body);
   line-height: 1.6;
-  color: var(--color-muted);
-}
-
-.tag {
-  background: #1C1917;
-  color: #F7F4EF;
-  box-shadow: 3px 3px 0 #78716C;
-  padding: 5px 11px;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  color: #D6D3D1;
 }
 
 .placeholder-tile {
-  background: repeating-linear-gradient(135deg, #E4DED3 0 9px, #EFEBE3 9px 18px);
-  box-shadow: 8px 8px 0 var(--color-rule);
+  background: repeating-linear-gradient(135deg, rgba(140,128,112,0.10) 0 9px, rgba(140,128,112,0.03) 9px 18px);
+  border: 1px solid rgba(140, 128, 112, 0.28);
   display: var(--tile-display);
 }
+
+.corner-tick {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid #8C8070;
+  pointer-events: none;
+}
+
+.corner-tick.tl { left: -1px; top: -1px; border-left-width: 1px; border-top-width: 1px; }
+.corner-tick.tr { right: -1px; top: -1px; border-right-width: 1px; border-top-width: 1px; }
+.corner-tick.bl { left: -1px; bottom: -1px; border-left-width: 1px; border-bottom-width: 1px; }
+.corner-tick.br { right: -1px; bottom: -1px; border-right-width: 1px; border-bottom-width: 1px; }
 
 .chrome-invert {
   color: #FFFFFF;
@@ -270,7 +316,6 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .tilt,
   .deck-card,
-  .deck-scrim,
   .stage-track {
     transition-duration: 1ms !important;
   }

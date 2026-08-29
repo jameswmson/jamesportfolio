@@ -21,7 +21,7 @@ export function slabScale(vw, vh) {
 export function deckStyle(index, active, { vw, vh, spread = 150, depthOfField = true } = {}) {
   const d = index - active
   const f = fitScale(vw, vh)
-  const k = ` translateY(-4px) scale(${f.toFixed(3)})`
+  const k = ` translateY(var(--deck-shift-y)) scale(${f.toFixed(3)})`
 
   if (d < 0) {
     return {
@@ -49,20 +49,15 @@ export function deckStyle(index, active, { vw, vh, spread = 150, depthOfField = 
 
   return {
     transform: `translate(-50%,-50%) translate3d(${off}px,${d * 16 * f}px,${-380 * d}px) rotateY(-16deg)${k}`,
-    opacity: 1,
+    opacity: Math.max(0, 0.45 - (d - 1) * 0.18),
     filter: `blur(${blur}px)`,
     zIndex: 200 - d * 10,
     pointerEvents: 'none',
   }
 }
 
-export function scrimOpacity(index, active) {
-  const d = index - active
-  return d <= 0 ? 0 : Math.min(0.74, 0.3 + (d - 1) * 0.22)
-}
-
 export const pad = (n) => String(n).padStart(2, '0')
 
 export function centerSlabTransform(vw, vh) {
-  return `rotateY(var(--rx)) rotateX(var(--ry)) scale(${slabScale(vw, vh).toFixed(3)}) translateY(-8px)`
+  return `rotateY(var(--rx)) rotateX(var(--ry)) scale(${slabScale(vw, vh).toFixed(3)}) translateY(var(--center-shift-y))`
 }

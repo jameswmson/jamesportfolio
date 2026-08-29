@@ -5,7 +5,7 @@ export default function PanelChrome({ panel, count, onStep }) {
   const many = count > 1
   return (
     <div
-      className="chrome-invert fixed right-0 left-0 z-[300] mx-auto flex w-fit items-center justify-center gap-[18px] transition-opacity duration-[360ms]"
+      className="panel-chrome chrome-invert fixed right-0 left-0 z-[300] mx-auto flex w-fit items-center justify-center gap-[18px] transition-opacity duration-[360ms]"
       style={{
         bottom: 'var(--counter-bottom)',
         opacity: many ? 1 : 0,

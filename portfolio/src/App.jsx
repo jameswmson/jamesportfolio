@@ -45,7 +45,7 @@ export default function App() {
         <Contact />
       </div>
 
-      <Folio section={section} />
+      <Folio label={sections[section].label} />
       <SectionNav section={section} onSelect={setSection} />
       <PanelChrome panel={panel} count={panelCount} onStep={stepPanel} />
     </div>
