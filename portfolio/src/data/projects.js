@@ -12,7 +12,7 @@ export const projects = [
     ],
     tags: ['React', 'Tailwind CSS', 'Node.js', 'Three.js', 'Claude API'],
     repoUrl: 'https://github.com/alexwmson/Blueprint-Bearhacks2026',
-    image: '/shots/blueprint.jpg',
+    image: '/shots/blueprint.png',
     imageLabel: 'blueprint shot',
   },
   {
@@ -39,7 +39,7 @@ export const projects = [
     ],
     tags: ['React', 'TypeScript', 'Vite'],
     repoUrl: 'https://github.com/prannyv/wfnbrowser',
-    image: '/shots/vertical-tabs-manager.jpg',
+    image: '/shots/vertical-tabs-manager.png',
     imageLabel: 'extension shot',
   },
   {

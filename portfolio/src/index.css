@@ -330,6 +330,13 @@ a {
   color: #D6D3D1;
 }
 
+/* Real shots carry only the show/hide rule, no striped fill or border: the
+   device mockups have transparent backgrounds, so a plate behind them would
+   show through as stripes and a stray rectangle around the frame. */
+.shot-tile {
+  display: var(--tile-display);
+}
+
 .placeholder-tile {
   background: repeating-linear-gradient(135deg, rgba(140,128,112,0.10) 0 9px, rgba(140,128,112,0.03) 9px 18px);
   border: 1px solid rgba(140, 128, 112, 0.28);

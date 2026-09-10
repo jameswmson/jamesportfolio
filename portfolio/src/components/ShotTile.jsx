@@ -19,7 +19,7 @@ export default function ShotTile({ src, alt, label }) {
         src={src}
         alt={alt}
         onError={() => setFailed(true)}
-        className="placeholder-tile max-h-[300px] w-full object-contain"
+        className="shot-tile max-h-[300px] w-full object-contain"
       />
     )
   }
