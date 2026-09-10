@@ -1,6 +1,6 @@
 export const contactLinks = [
-  { label: 'GitHub', href: 'https://github.com/JamesWiiiiamson' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/james-williamson9573/' },
+  { label: 'GitHub', href: 'https://github.com/jameswmson' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jameswmson' },
   { label: 'Email', href: 'mailto:Jaswmson@gmail.com' },
   { label: 'Resume', href: '/resume.pdf' },
 ]

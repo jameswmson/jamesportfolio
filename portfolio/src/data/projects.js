@@ -8,7 +8,7 @@ export const projects = [
       'Built a Power BI dashboard grading 266 players into an A+ to F tier system using a composite EPA index.',
     ],
     tags: ['Python', 'SQL', 'PostgreSQL', 'Power BI'],
-    repoUrl: 'https://github.com/JamesWiiiiamson/freeagencytracker',
+    repoUrl: 'https://github.com/jameswmson/freeagencytracker',
     // drop a real screenshot in /public and set image: '/shots/free-agency.png'
     image: null,
     imageLabel: 'dashboard shot',
@@ -35,7 +35,7 @@ export const projects = [
       'Cut pedestrian exposure to high-crime areas by ~30% per route by processing 1,300+ city blocks of crime data from 365+ days of Toronto Police records.',
     ],
     tags: ['JavaScript', 'TypeScript', 'React', 'Git'],
-    repoUrl: 'https://github.com/JamesWiiiiamson/StreetSmart',
+    repoUrl: 'https://github.com/jameswmson/StreetSmart',
     image: null,
     imageLabel: 'route map shot',
   },
