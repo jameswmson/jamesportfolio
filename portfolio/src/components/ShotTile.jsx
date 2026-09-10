@@ -1,8 +1,28 @@
-/** Real screenshot when one exists, striped placeholder until then. */
+import { useState } from 'react'
+
+/**
+ * Real screenshot when one exists, striped placeholder until then.
+ *
+ * The placeholder keeps a fixed 4/5 box, but a real shot renders at its own
+ * aspect ratio: these are charts, logos and screenshots — all landscape — and
+ * cropping them into a portrait box with object-cover threw away more than
+ * half of each one. A src that fails to load falls back to the placeholder
+ * too, so a path can be set before the file lands.
+ */
 export default function ShotTile({ src, alt, label }) {
-  if (src) {
-    return <img src={src} alt={alt} className="placeholder-tile aspect-[4/5] w-full object-cover" />
+  const [failed, setFailed] = useState(false)
+
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        onError={() => setFailed(true)}
+        className="placeholder-tile w-full object-contain"
+      />
+    )
   }
+
   return (
     <div className="placeholder-tile aspect-[4/5] items-end justify-center pb-3">
       <span className="font-mono text-[9.5px] leading-none tracking-[0.16em] text-[#8C8070] uppercase">

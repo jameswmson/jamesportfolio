@@ -51,7 +51,7 @@
   --hero-sub: 20px;
 
   --slab-w: 880px;
-  --slab-h: 600px;
+  --slab-h: 660px;
   --slab-left: calc(50% - 56px);
   --slab-pad: 48px 54px;
   --slab-pad-stack: 56px 60px;
@@ -65,8 +65,8 @@
   --about-gap: clamp(32px, 5vw, 74px);
   --about-shift-y: 0px;
 
-  --skills-cols: repeat(3, minmax(0, 1fr));
-  --skills-gap: 32px;
+  --skills-cols: repeat(4, minmax(0, 1fr));
+  --skills-gap: 26px;
   --skills-list-dir: column;
   --skills-list-wrap: nowrap;
   --skills-list-gap: 7px;

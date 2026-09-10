@@ -1,14 +1,27 @@
 export const skillGroups = [
   {
     title: 'Languages',
-    items: ['Java', 'Python', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'SQL'],
+    items: ['Python', 'JavaScript', 'TypeScript', 'Java', 'SQL'],
+  },
+  {
+    title: 'Web',
+    items: ['React', 'Node.js', 'REST APIs', 'HTML', 'CSS', 'Tailwind CSS', 'Three.js'],
+  },
+  {
+    title: 'Data and AI',
+    items: [
+      'pandas',
+      'PostgreSQL',
+      'ETL',
+      'Power BI',
+      'Claude API',
+      'OpenAI API',
+      'Gemini API',
+      'Prompt Engineering',
+    ],
   },
   {
     title: 'Tools',
-    items: ['React', 'Node.js', 'Git', 'GitHub', 'VS Code', 'Linux', 'Excel', 'PowerPoint', 'Word'],
-  },
-  {
-    title: 'Data',
-    items: ['pandas', 'NumPy', 'Matplotlib', 'Power BI'],
+    items: ['Git', 'GitHub', 'Supabase', 'Google Cloud Vision', 'VS Code', 'Linux'],
   },
 ]

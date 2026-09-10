@@ -21,7 +21,7 @@ export default function Projects({ panel, viewport }) {
               <CardHeader
                 eyebrow={`Project ${pad(i + 1)} / ${pad(projects.length)}`}
                 title={project.title}
-                meta={project.date}
+                meta={project.award ? `${project.award}  ·  ${project.date}` : project.date}
                 rule
               />
               <BulletList items={project.description} />

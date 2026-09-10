@@ -1,16 +1,32 @@
 export const projects = [
   {
+    title: 'Blueprint',
+    slug: 'blueprint',
+    date: 'April 2026',
+    award: '1st Place @ BearHacks 2026',
+    description: [
+      'Won 1st of 70 teams (300+ participants) for an AI web app that turns a pile of LEGO into 3D builds with step-by-step instructions.',
+      'Built a streaming image pipeline on Google Cloud Vision, cropping up to 25 padded bounding-box images per scan.',
+      'Classified brick colour, size, and shape with Gemini Flash 2.5 at roughly 90% accuracy.',
+      'Prompted Claude Sonnet 4.6 with LDraw coordinates to generate valid 3D builds, rendered in Three.js with ElevenLabs voice narration.',
+    ],
+    tags: ['React', 'Tailwind CSS', 'Node.js', 'Three.js', 'Claude API'],
+    repoUrl: 'https://github.com/alexwmson/Blueprint-Bearhacks2026',
+    image: '/shots/blueprint.jpg',
+    imageLabel: 'blueprint shot',
+  },
+  {
     title: 'Free Agency Steals',
     slug: 'free-agency-steals',
     date: 'March 2026 — April 2026',
     description: [
       'Built an automated ETL pipeline processing 612 NFL player records daily across 3 PostgreSQL tables.',
+      'Fixed cross-source mismatches across 450+ free agent signings with a two-phase fuzzy matching pipeline.',
       'Built a Power BI dashboard grading 266 players into an A+ to F tier system using a composite EPA index.',
     ],
     tags: ['Python', 'SQL', 'PostgreSQL', 'Power BI'],
     repoUrl: 'https://github.com/jameswmson/freeagencytracker',
-    // drop a real screenshot in /public and set image: '/shots/free-agency.png'
-    image: null,
+    image: '/shots/free-agency-steals.png',
     imageLabel: 'dashboard shot',
   },
   {
@@ -36,7 +52,7 @@ export const projects = [
     ],
     tags: ['JavaScript', 'TypeScript', 'React', 'Git'],
     repoUrl: 'https://github.com/jameswmson/StreetSmart',
-    image: null,
+    image: '/shots/streetsmart.png',
     imageLabel: 'route map shot',
   },
 ]
