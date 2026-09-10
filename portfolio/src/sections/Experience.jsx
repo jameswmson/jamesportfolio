@@ -21,11 +21,6 @@ export default function Experience({ panel, viewport }) {
               meta={`${item.org}  ·  ${item.date}`}
             />
             <BulletList items={item.bullets} className="mt-[22px] max-w-[620px]" />
-            {item.placeholder ? (
-              <p className="mt-[26px] mb-0 font-mono text-[10px] leading-none tracking-[0.16em] text-[#78716C] uppercase">
-                Awaiting real content
-              </p>
-            ) : null}
           </DeckSlab>
         ))}
       </div>
