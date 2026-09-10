@@ -39,7 +39,7 @@ export const projects = [
     ],
     tags: ['React', 'TypeScript', 'Vite'],
     repoUrl: 'https://github.com/prannyv/wfnbrowser',
-    image: null,
+    image: '/shots/vertical-tabs-manager.jpg',
     imageLabel: 'extension shot',
   },
   {
