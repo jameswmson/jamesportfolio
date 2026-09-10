@@ -2,10 +2,10 @@ export const MOBILE_MAX = 820
 
 export const isMobile = (vw) => vw <= MOBILE_MAX
 
-/** Scale that fits an 880x700 slab inside the viewport. */
+/** Scale that fits an 880x660 slab inside the viewport. */
 export function fitScale(vw, vh) {
   if (isMobile(vw)) return 1
-  return Math.min(1, (vw - 178) / 880, (vh - 160) / 700)
+  return Math.min(1, (vw - 178) / 880, (vh - 160) / 660)
 }
 
 /** Scale for the centered (non-deck) slabs, which are shorter. */

@@ -51,11 +51,11 @@
   --hero-sub: 20px;
 
   --slab-w: 880px;
-  --slab-h: 700px;
+  --slab-h: 660px;
   --slab-left: calc(50% - 56px);
   --slab-pad: 48px 54px;
   --slab-pad-stack: 56px 60px;
-  --slab-cols: 1fr 330px;
+  --slab-cols: 1fr 280px;
   --slab-gap: 40px;
   --deck-shift-y: -4px;
   --center-shift-y: -8px;
