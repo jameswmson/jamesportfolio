@@ -22,10 +22,15 @@ export function slabScale(vw, vh) {
  * facing forward and still reads as one ring when more cards are added.
  * `radiusK` is the ring radius as a multiple of card width, and `visible` is
  * how many cards stay on screen either side of the live one.
+ *
+ * `arc` and `tilt` bow the ring: cards sink and lean tangentially as they
+ * travel around it, so the row curves instead of turning along a flat line.
+ * Both are 0 on mobile, where there is no room for neighbours anyway and the
+ * transform stays exactly as it was.
  */
 const RING = {
-  desktop: { step: 38, radiusK: 1.25, visible: 2 },
-  mobile: { step: 46, radiusK: 1.4, visible: 1 },
+  desktop: { step: 38, radiusK: 1.25, visible: 2, arc: 0.17, tilt: 5 },
+  mobile: { step: 46, radiusK: 1.4, visible: 1, arc: 0, tilt: 0 },
 }
 
 /**
@@ -56,11 +61,19 @@ export function deckStyle(index, active, { vw, vh } = {}) {
   // card on a ring centred behind the screen — and leaves d === 0 as identity,
   // so the live card renders exactly as it would flat.
   const ring = `translateZ(${-r}px) rotateY(${d * cfg.step}deg) translateZ(${r}px)`
+
+  // Bow the row. rotateY leaves the Y axis alone, so this drop still reads as
+  // vertical after the turn; 1 - cos gives a symmetric sag that grows with the
+  // angle. rotateZ then leans each card along the tangent of that curve.
+  const theta = (d * cfg.step * Math.PI) / 180
+  const dip = (cfg.arc * cardW * (1 - Math.cos(theta))).toFixed(1)
+  const curve = cfg.arc ? ` translateY(${dip}px) rotateZ(${(d * cfg.tilt).toFixed(2)}deg)` : ''
+
   const s = f * SHRINK ** away
   const tail = ` translateY(var(--deck-shift-y)) scale(${s.toFixed(3)})`
 
   return {
-    transform: `translate(-50%,-50%) ${ring}${tail}`,
+    transform: `translate(-50%,-50%) ${ring}${curve}${tail}`,
     opacity: away > cfg.visible ? 0 : d === 0 ? 1 : Math.max(0, 0.5 - (away - 1) * 0.2),
     filter: d === 0 ? 'blur(0px)' : `blur(${Math.min(5, away * 1.6)}px)`,
     zIndex: 200 - away * 10,
