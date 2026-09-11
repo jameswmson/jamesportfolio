@@ -56,7 +56,14 @@
 
   --pad-r: calc(150 * var(--u));
   --pad-l: calc(80 * var(--u));
-  --hero-pad: calc(88 * var(--u)) var(--pad-r) calc(104 * var(--u)) var(--pad-l);
+  /* The hero keeps its own left gutter, floored at the 80px it had before
+     this layout became proportional. The serif J paints about 11px left of
+     its text box and the mouse tilt can carry the line up to 15px further
+     left again, so the hero is the one place where a gutter that shrinks
+     with the viewport lets the drawing reach the window edge. Hero only:
+     About, Skills and Contact keep plain --pad-l. */
+  --hero-pad-l: max(80px, calc(80 * var(--u)));
+  --hero-pad: calc(88 * var(--u)) var(--pad-r) calc(104 * var(--u)) var(--hero-pad-l);
   --hero-fs: calc(120.96 * var(--u));
   --hero-h: calc(237.6 * var(--u));
   --hero-sub: calc(20 * var(--u));
