@@ -10,7 +10,7 @@ export default function Experience({ panel, viewport }) {
       id="experience"
       data-screen-label="04 Experience"
       className="stage-section overflow-hidden"
-      style={{ perspective: '1500px', perspectiveOrigin: '50% 50%' }}
+      style={{ perspective: 'var(--persp)', perspectiveOrigin: '50% 50%' }}
     >
       <div className="tilt absolute inset-0" style={{ transition: 'transform 260ms ease-out' }}>
         {experience.map((item, i) => (

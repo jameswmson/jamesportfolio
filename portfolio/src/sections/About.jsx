@@ -1,5 +1,7 @@
 import { lazy, Suspense, useState } from 'react'
 
+import { u } from '../lib/deck.js'
+
 const DitheredHead = lazy(() => import('../components/DitheredHead.jsx'))
 
 function hasWebGL() {
@@ -31,11 +33,11 @@ export default function About() {
       className="stage-section flex items-center"
       style={{
         padding: '0 var(--pad-r) 0 var(--pad-l)',
-        perspective: '1500px',
+        perspective: 'var(--persp)',
       }}
     >
       <div
-        className="grid w-full items-center"
+        className="grid w-full items-center justify-center"
         style={{
           gridTemplateColumns: 'var(--about-cols)',
           gap: 'var(--about-gap)',
@@ -63,22 +65,37 @@ export default function About() {
           )}
         </div>
         <div className="tilt">
-          <p className="m-0 mb-3.5 text-[11px] font-medium tracking-[0.24em] text-chalk uppercase">
+          <p
+            className="m-0 font-medium tracking-[0.24em] text-chalk uppercase"
+            style={{ fontSize: u(11), marginBottom: u(14) }}
+          >
             About
           </p>
           <h2
             className="m-0 font-serif leading-[0.98] font-bold tracking-[-0.03em] text-paper"
-            style={{ fontSize: 'var(--contact-fs)', textShadow: '3px 3px 0 rgba(0,0,0,0.55)' }}
+            style={{
+              fontSize: 'var(--contact-fs)',
+              textShadow: `${u(3)} ${u(3)} 0 rgba(0,0,0,0.55)`,
+            }}
           >
             About
           </h2>
           <div
-            className="mt-[26px] h-px w-[200px]"
-            style={{ background: 'linear-gradient(90deg,#78716C,transparent)' }}
+            className="h-px"
+            style={{
+              marginTop: u(26),
+              width: u(200),
+              background: 'linear-gradient(90deg,#78716C,transparent)',
+            }}
           />
           <div
-            className="mt-[26px] flex flex-col gap-3.5 text-stone-300"
-            style={{ fontSize: 'var(--card-body)', lineHeight: 1.6 }}
+            className="flex flex-col text-stone-300"
+            style={{
+              marginTop: u(26),
+              gap: u(14),
+              fontSize: 'var(--about-body)',
+              lineHeight: 1.6,
+            }}
           >
             <p className="m-0">
               Hey! I&apos;m James, a developer who&apos;s passionate about turning ideas into

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { sections } from '../data/sections.js'
+import { u } from '../lib/deck.js'
 
 export default function SectionNav({ section, onSelect }) {
   const buttonRefs = useRef([])
@@ -45,9 +46,10 @@ export default function SectionNav({ section, onSelect }) {
                 type="button"
                 onClick={() => onSelect(i)}
                 aria-current={on ? 'true' : undefined}
-                className="section-nav-button cursor-pointer border-0 bg-transparent p-0 py-0.5 font-sans uppercase transition-[font-size,letter-spacing] duration-200"
+                className="section-nav-button cursor-pointer border-0 bg-transparent p-0 font-sans uppercase transition-[font-size,letter-spacing] duration-200"
                 style={{
-                  fontSize: on ? '14px' : '12px',
+                  paddingBlock: u(2),
+                  fontSize: on ? u(14) : u(12),
                   fontWeight: on ? 700 : 400,
                   letterSpacing: on ? '0.2em' : '0.16em',
                   color: 'inherit',

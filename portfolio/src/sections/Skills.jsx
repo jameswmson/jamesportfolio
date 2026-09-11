@@ -7,7 +7,7 @@ export default function Skills({ viewport }) {
       id="skills"
       data-screen-label="05 Skills"
       className="stage-section flex items-center justify-center overflow-hidden"
-      style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: '1500px' }}
+      style={{ padding: '0 var(--pad-r) 0 var(--pad-l)', perspective: 'var(--persp)' }}
     >
       <CenterSlab viewport={viewport}>
         <p className="eyebrow m-0 mb-3.5 text-chalk">Skills</p>

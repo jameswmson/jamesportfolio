@@ -1,3 +1,5 @@
+import { u } from '../lib/deck.js'
+
 const LAYERS = [
   [-70, '#3F3A35'],
   [-60, '#474138'],
@@ -16,7 +18,11 @@ const TYPE = {
   letterSpacing: '-0.035em',
 }
 
-/** Stacked copies of the same words in translateZ to fake a cut-metal extrusion. */
+/**
+ * Stacked copies of the same words in translateZ to fake a cut-metal extrusion.
+ * The depths are reference pixels: the extrusion has to grow with the type, or
+ * the letters would look progressively flatter on larger screens.
+ */
 export default function ExtrudedText({ lines }) {
   const words = lines.map((line) => (
     <span key={line} className="block">
@@ -31,7 +37,7 @@ export default function ExtrudedText({ lines }) {
           key={z}
           aria-hidden="true"
           className="absolute inset-0"
-          style={{ ...TYPE, color, transform: `translateZ(${z}px)` }}
+          style={{ ...TYPE, color, transform: `translateZ(${u(z)})` }}
         >
           {words}
         </div>

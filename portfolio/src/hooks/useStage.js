@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { MOBILE_MAX } from '../lib/deck.js'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { MOBILE_MAX, uiScale } from '../lib/deck.js'
 
 const WHEEL_LOCK_MS = 700
 const SWIPE_MIN_PX = 40
@@ -27,6 +27,17 @@ export function useStage(counts) {
   useEffect(() => {
     sectionRef.current = section
   }, [section])
+
+  /*
+   * Publish the one scale factor to CSS. Everything the stylesheet sizes in
+   * screen space is a multiple of --u, and the slab transforms use the same
+   * uiScale(), so the whole page grows and shrinks together. This is a layout
+   * effect because it must land before the first paint, or a large screen
+   * would flash the design at 1x before settling.
+   */
+  useLayoutEffect(() => {
+    document.documentElement.style.setProperty('--u', `${uiScale(viewport.vw, viewport.vh)}px`)
+  }, [viewport])
 
   useEffect(() => {
     countsRef.current = counts

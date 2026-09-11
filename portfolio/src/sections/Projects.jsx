@@ -12,7 +12,7 @@ export default function Projects({ panel, viewport }) {
       id="projects"
       data-screen-label="03 Projects"
       className="stage-section overflow-hidden"
-      style={{ perspective: '1500px', perspectiveOrigin: '50% 50%' }}
+      style={{ perspective: 'var(--persp)', perspectiveOrigin: '50% 50%' }}
     >
       <div className="tilt absolute inset-0" style={{ transition: 'transform 260ms ease-out' }}>
         {projects.map((project, i) => (

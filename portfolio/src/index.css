@@ -38,32 +38,57 @@
 }
 
 /* ---- stage scale tokens: desktop defaults, phone overrides ---- */
+/*
+ * --u is one reference pixel: 1px at the 1440x900 design size, and scaled from
+ * there by useStage so the desktop layout is the same drawing at every screen
+ * size instead of a fixed-size drawing in a growing window. Two rules keep it
+ * straight: anything positioned in screen space is written as a multiple of
+ * --u, and anything inside a .slab stays in plain px, because the slab is laid
+ * out at reference size and scaled as a whole by its own transform. Sizing a
+ * slab's interior in --u would scale it twice.
+ */
 :root {
+  --u: 1px;
+
   --rx: 0deg;
   --ry: 0deg;
   --ease-stage: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --pad-r: 150px;
-  --pad-l: clamp(2rem, 6vw, 5rem);
-  --hero-pad: 88px 150px 104px clamp(2rem, 6vw, 5rem);
-  --hero-fs: clamp(4rem, 8.4vw, 8.25rem);
-  --hero-h: clamp(160px, 16.5vw, 250px);
-  --hero-sub: 20px;
+  --pad-r: calc(150 * var(--u));
+  --pad-l: calc(80 * var(--u));
+  --hero-pad: calc(88 * var(--u)) var(--pad-r) calc(104 * var(--u)) var(--pad-l);
+  --hero-fs: calc(120.96 * var(--u));
+  --hero-h: calc(237.6 * var(--u));
+  --hero-sub: calc(20 * var(--u));
+  --hero-eyebrow-mb: calc(26 * var(--u));
+  --hero-rule-mt: calc(32 * var(--u));
+  --hero-sub-mt: calc(26 * var(--u));
+  --hero-scroll-mt: calc(34 * var(--u));
+
+  /* Depth reads as a fraction of the drawing, so the perspective and the
+     extrusion behind the hero type scale with everything else. */
+  --persp: calc(1500 * var(--u));
+  --persp-hero: calc(1300 * var(--u));
 
   --slab-w: 880px;
   --slab-h: 700px;
-  --slab-left: calc(50% - 56px);
+  --slab-left: calc(50% - 56 * var(--u));
   --slab-pad: 48px 54px;
   --slab-pad-stack: 56px 60px;
   --slab-cols: 1fr 330px;
   --slab-gap: 40px;
-  --deck-shift-y: -4px;
-  --center-shift-y: -8px;
+  --deck-shift-y: calc(-4 * var(--u));
+  --center-shift-y: calc(-8 * var(--u));
 
-  --about-img-w: clamp(220px, 34vw, 490px);
-  --about-cols: var(--about-img-w) 1fr;
-  --about-gap: clamp(32px, 5vw, 74px);
+  --about-img-w: calc(489.6 * var(--u));
+  /* The text column is a fixed reference width, not 1fr: left to fill, its
+     line length would grow with the screen and the paragraph would set far
+     wider on a large monitor than in the design. The row is centred instead,
+     which is a no-op at reference size, where the two columns exactly fill. */
+  --about-cols: var(--about-img-w) calc(648.4 * var(--u));
+  --about-gap: calc(72 * var(--u));
   --about-shift-y: 0px;
+  --about-body: calc(15.5 * var(--u));
 
   --skills-cols: repeat(4, minmax(0, 1fr));
   --skills-gap: 26px;
@@ -74,21 +99,22 @@
   --card-h2: 52px;
   --card-body: 15.5px;
   --tile-display: flex;
-  --contact-fs: clamp(2.75rem, 5vw, 4.25rem);
+  --contact-fs: calc(68 * var(--u));
+  --contact-gap: calc(4 * var(--u));
 
   --nav-dir: column;
   --nav-left: auto;
-  --nav-right: 34px;
+  --nav-right: calc(34 * var(--u));
   --nav-top: 50%;
   --nav-bottom: auto;
   --nav-ty: -50%;
   --nav-align: flex-end;
   --nav-just: flex-end;
-  --nav-gap: 17px;
+  --nav-gap: calc(17 * var(--u));
 
-  --counter-bottom: 30px;
-  --folio-top: 34px;
-  --folio-left: 38px;
+  --counter-bottom: calc(30 * var(--u));
+  --folio-top: calc(34 * var(--u));
+  --folio-left: calc(38 * var(--u));
 
   --backdrop-opacity: 0.5;
   --backdrop-stroke: 2;
@@ -102,6 +128,10 @@
     --hero-fs: clamp(2.65rem, 12.5vw, 4.15rem);
     --hero-h: calc(var(--hero-fs) * 1.88);
     --hero-sub: 16px;
+    --hero-eyebrow-mb: 16px;
+    --hero-rule-mt: 8px;
+    --hero-sub-mt: 16px;
+    --hero-scroll-mt: 24px;
 
     --slab-w: calc(100vw - 32px);
     --slab-h: calc(100dvh - 200px);
@@ -117,6 +147,7 @@
     --about-gap: 22px;
     --about-img-w: 200px;
     --about-shift-y: -40px;
+    --about-body: 13.5px;
 
     --skills-cols: 1fr;
     --skills-gap: 18px;
@@ -128,6 +159,7 @@
     --card-body: 13.5px;
     --tile-display: none;
     --contact-fs: clamp(2.75rem, 13vw, 4rem);
+    --contact-gap: 12px;
 
     --nav-dir: row;
     --nav-left: 0;
@@ -355,6 +387,29 @@ a {
 .corner-tick.tr { right: -1px; top: -1px; border-right-width: 1px; border-top-width: 1px; }
 .corner-tick.bl { left: -1px; bottom: -1px; border-left-width: 1px; border-bottom-width: 1px; }
 .corner-tick.br { right: -1px; bottom: -1px; border-right-width: 1px; border-bottom-width: 1px; }
+
+/*
+ * The cut-paper shadow under the contact links is part of the drawing, not a
+ * fixed ornament: its offsets scale with --u so the links look identical on a
+ * laptop and a 4K panel. As arbitrary Tailwind utilities these offsets could
+ * only ever be fixed pixels.
+ */
+.contact-link {
+  font-size: var(--contact-fs);
+  text-shadow:
+    calc(3 * var(--u)) calc(3 * var(--u)) 0 #57534E,
+    calc(6 * var(--u)) calc(6 * var(--u)) 0 #44403C,
+    calc(9 * var(--u)) calc(9 * var(--u)) 0 #302B27;
+  transition: text-shadow 200ms ease-out, transform 200ms ease-out;
+}
+
+.contact-link:hover {
+  transform: translate(calc(-4 * var(--u)), calc(-4 * var(--u)));
+  text-shadow:
+    calc(5 * var(--u)) calc(5 * var(--u)) 0 #78716C,
+    calc(10 * var(--u)) calc(10 * var(--u)) 0 #57534E,
+    calc(15 * var(--u)) calc(15 * var(--u)) 0 #3F3A35;
+}
 
 .chrome-invert {
   color: #FFFFFF;

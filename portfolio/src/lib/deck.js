@@ -2,17 +2,31 @@ export const MOBILE_MAX = 820
 
 export const isMobile = (vw) => vw <= MOBILE_MAX
 
-/** Scale that fits an 880x700 slab inside the viewport. */
-export function fitScale(vw, vh) {
+/**
+ * The desktop design is drawn once, at this size, and then scaled. Every
+ * length outside the slabs is written as a multiple of `--u`, and the slabs
+ * themselves are laid out at these reference pixels and scaled by the same
+ * factor — so the page is the same drawing at every desktop size rather than a
+ * fixed-size drawing floating in a growing window.
+ */
+export const REF_W = 1440
+export const REF_H = 900
+
+/**
+ * One factor for the whole page. Fitting against both axes is what keeps the
+ * proportions honest: scaling on width alone would push the cards off a short
+ * screen, and the smaller of the two ratios is the largest the design can be
+ * while still whole. It is deliberately uncapped, so a 4K monitor gets the
+ * same composition as a laptop rather than the same pixel sizes.
+ */
+export function uiScale(vw, vh) {
+  if (!vw || !vh) return 1
   if (isMobile(vw)) return 1
-  return Math.min(1, (vw - 178) / 880, (vh - 160) / 700)
+  return Math.min(vw / REF_W, vh / REF_H)
 }
 
-/** Scale for the centered (non-deck) slabs, which are shorter. */
-export function slabScale(vw, vh) {
-  if (isMobile(vw)) return 1
-  return Math.min(1, (vw - 178) / 880, (vh - 108) / 540)
-}
+/** A reference-pixel length, for the screen-space lengths CSS owns. */
+export const u = (n) => `calc(${n} * var(--u))`
 
 /**
  * Ring geometry. `step` is the angle between neighbouring cards, deliberately
@@ -42,6 +56,9 @@ const RING = {
  */
 const SHRINK = 0.78
 
+/** Reference width of a slab, matching --slab-w. */
+const SLAB_W = 880
+
 /**
  * Position one card on the carousel ring.
  * d === 0 is the live card, sitting square to the camera at z 0; the rest
@@ -50,10 +67,10 @@ const SHRINK = 0.78
 export function deckStyle(index, active, { vw, vh } = {}) {
   const d = index - active
   const cfg = isMobile(vw) ? RING.mobile : RING.desktop
-  const f = fitScale(vw, vh)
+  const k = uiScale(vw, vh)
 
-  // Ring scales with the cards so the composition holds as the slab shrinks.
-  const cardW = isMobile(vw) ? Math.max(1, vw - 32) : 880 * f
+  // Ring scales with the cards so the composition holds at any size.
+  const cardW = isMobile(vw) ? Math.max(1, vw - 32) : SLAB_W * k
   const r = (cardW * cfg.radiusK).toFixed(1)
   const away = Math.abs(d)
 
@@ -69,7 +86,9 @@ export function deckStyle(index, active, { vw, vh } = {}) {
   const dip = (cfg.arc * cardW * (1 - Math.cos(theta))).toFixed(1)
   const curve = cfg.arc ? ` translateY(${dip}px) rotateZ(${(d * cfg.tilt).toFixed(2)}deg)` : ''
 
-  const s = f * SHRINK ** away
+  // The card is laid out at reference size and scaled here, so its padding,
+  // type and rules all travel with it and never need their own breakpoints.
+  const s = k * SHRINK ** away
   const tail = ` translateY(var(--deck-shift-y)) scale(${s.toFixed(3)})`
 
   return {
@@ -85,5 +104,6 @@ export function deckStyle(index, active, { vw, vh } = {}) {
 export const pad = (n) => String(n).padStart(2, '0')
 
 export function centerSlabTransform(vw, vh) {
-  return `rotateY(var(--rx)) rotateX(var(--ry)) scale(${slabScale(vw, vh).toFixed(3)}) translateY(var(--center-shift-y))`
+  const k = uiScale(vw, vh)
+  return `rotateY(var(--rx)) rotateX(var(--ry)) scale(${k.toFixed(3)}) translateY(var(--center-shift-y))`
 }
