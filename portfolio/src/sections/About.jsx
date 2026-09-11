@@ -99,7 +99,7 @@ export default function About() {
           >
             <p className="m-0">
               Hey! I&apos;m James, a developer who&apos;s passionate about turning ideas into
-              solutions. I am in my First Year at Western University studying computer science, I
+              solutions. I am in my Second Year at Western University studying computer science, I
               enjoy building projects, solving problems, exploring the world, and playing games.
             </p>
             <p className="m-0">

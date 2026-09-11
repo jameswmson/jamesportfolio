@@ -60,10 +60,14 @@ export default function DitheredHead({
     const renderer = new THREE.WebGLRenderer({
       antialias: false,
       alpha: transparent,
-      premultipliedAlpha: false,
     });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    if (transparent) renderer.setClearAlpha(0);
+    // Clear to alpha 0 in both modes. Transparent mode needs it so the canvas
+    // composites onto the page, and opaque mode is unaffected because its
+    // context is created without an alpha channel at all — but the offscreen
+    // target is cleared the same way either way, which is what lets the dither
+    // pass below tell "nothing was drawn here" from the colour target's alpha.
+    renderer.setClearAlpha(0);
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
     host.appendChild(renderer.domElement);
@@ -181,9 +185,16 @@ export default function DitheredHead({
           float ao = clamp((acc / 8.0 - d0) * uAOStrength + 1.0, 0.0, 1.0);
           lum = smoothstep(uLow, uHigh, lum * ao);
 
-          // background stays clean: far depth means nothing was drawn
-          if (d0 > uFar * 0.9) {
-            gl_FragColor = vec4(uGround, 1.0 - uTransparent);
+          // Background stays clean. This reads the colour target's alpha rather
+          // than the depth texture: depth attachments are the fragile part of
+          // this pipeline across browsers, and when one misbehaves the whole
+          // background failed solid instead of punching out. Alpha is exact
+          // here — the head writes 1.0, the clear leaves 0.0 — and it is
+          // sampled at the same cell centre the depth test used, so the
+          // classification is identical wherever depth worked.
+          if (texture2D(tDiffuse, cUv).a < 0.5) {
+            float bgA = 1.0 - uTransparent;
+            gl_FragColor = vec4(uGround * bgA, bgA);
             return;
           }
 
@@ -196,7 +207,14 @@ export default function DitheredHead({
 
           // opaque: paint ground everywhere, dots on top (unchanged look)
           // transparent: ground is punched out, only dots are drawn
-          gl_FragColor = vec4(mix(uGround, uDot, coverage), mix(1.0, coverage, uTransparent));
+          //
+          // Multiplying the colour by its own alpha is what premultiplied
+          // compositing expects, and reproduces exactly what the previous
+          // unpremultiplied output composited to — same blend, on the path
+          // browsers actually implement well.
+          vec3 c = mix(uGround, uDot, coverage);
+          float a = mix(1.0, coverage, uTransparent);
+          gl_FragColor = vec4(c * a, a);
         }`,
     });
     post.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
@@ -252,6 +270,16 @@ export default function DitheredHead({
     const ro = new ResizeObserver(resize);
     ro.observe(host);
     resize();
+
+    // iOS drops WebGL contexts under memory pressure, and a dropped context
+    // leaves a dead canvas on the page. The default action of this event is to
+    // make the loss permanent, so preventing it is what allows the browser to
+    // hand the context back; re-sizing on restore rebuilds the render target.
+    const canvas = renderer.domElement;
+    const onContextLost = (e) => e.preventDefault();
+    const onContextRestored = () => resize();
+    canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     // ---- loop ----
     let visible = true;
@@ -323,6 +351,8 @@ export default function DitheredHead({
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
       host.removeEventListener('pointerdown', onPointerDown);
       host.removeEventListener('pointermove', onPointerMove);
       host.removeEventListener('pointerup', onPointerUp);
