@@ -17,7 +17,6 @@ export const skillGroups = [
       'Claude API',
       'OpenAI API',
       'Gemini API',
-      'Prompt Engineering',
     ],
   },
   {
